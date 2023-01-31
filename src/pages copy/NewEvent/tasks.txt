@@ -1,0 +1,14 @@
+// Todo
+ - Fetch event 
+    - If Not found
+        - Show not found comp
+    - else  
+        - If user is owner -> Show edit button -- Done
+        - else show event Details
+            - If user has RSVPd
+                - If approved from waitList -> Show full Details -- Done
+                - else Show you're in waitlist -- Done
+            - else Show Signup to RSVP with blurred overlay on chirps and gallery -- Done
+
+- Change RSVP api to rsvp instead of login
+- Stop using localstorage for RSVP -> Move everything to backend
