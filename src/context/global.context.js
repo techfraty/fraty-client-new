@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { FRATY_EVENTS } from "../util/constants";
 import { fetchServices } from "../util/services";
 import { useAuthContext } from "./auth.context";
+import { useRouter } from "next/router";
 
 const GlobalContext = createContext({});
 
@@ -32,7 +33,9 @@ export default function GlobalContextProvider({ children }) {
   const [prevEventsFromLS, setPrevEventsFromLS] = useState([]);
   const [customBackHeaderLink, setCustomBackHeaderLink] = useState(null);
 
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
+  const router = useRouter();
+  const { pathname } = router;
   // const { address } = useAccount();
 
   const { currentUser } = useAuthContext();

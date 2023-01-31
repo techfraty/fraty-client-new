@@ -11,7 +11,8 @@ import { authServices, postServices } from "../../util/services";
 import Button from "./../../components/Button/Button";
 
 const Profile = () => {
-  const { currentUser, userDetails, setUserDetails } = useAuthContext();
+  const { currentUser, userDetails, setUserDetails, setCurrentUser } =
+    useAuthContext();
   // console.log(userDetails, currentUser);
   const { setCurrentPageTitle, userCred } = useGlobalState();
   const [userInput, setUserInput] = React.useState({
@@ -67,6 +68,19 @@ const Profile = () => {
           },
           song: userInput?.song ?? null,
         }));
+        setCurrentUser((prev) => ({
+          ...prev,
+          wallet: userInput?.number,
+          name: userInput?.name,
+          profession: userInput?.profession,
+          social: {
+            web: userInput?.web ?? null,
+            twitter: userInput?.twitter ?? null,
+            instagram: userInput?.instagram ?? null,
+          },
+          song: userInput?.song ?? null,
+        }));
+        console.log(currentUser);
       }
       toast.success("User Info Saved!");
     } catch (error) {

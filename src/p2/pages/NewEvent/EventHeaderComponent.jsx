@@ -196,14 +196,17 @@ const EventHeaderCtr = styled.div`
   }
   .reactionsss {
     position: absolute;
-    top: -50px;
+    top: -70px;
     right: 0;
     border-radius: 80px;
-    border: 1px solid black;
     z-index: 100;
-    backdrop-filter: blur(6px);
+    ${"" /* transition: 1s ease; */}
     @media screen and (max-width: 678px) {
-      top: -20px;
+      top: -30px;
+    }
+    :has(.notgoing_reaction.show) {
+      backdrop-filter: blur(6px);
+      border: 1px solid black;
     }
   }
   .notgoing_reaction {

@@ -1,3 +1,9 @@
+//fonts
+import titleFont from "./fonts/outer-sans-bold.otf";
+import contentFont from "./fonts/roobert-regular.ttf";
+import lightFont from "./fonts/Sora-Regular.ttf";
+import btnFont from "./fonts/outer-sans-medium.otf";
+
 //logos
 import brand_logo from "./images/brand/logo.svg";
 import dehidden_logo from "./images/brand/dehidden_logo.svg";
@@ -75,20 +81,12 @@ import blueStarGradient from "./images/gradients/Star 4.svg";
 import greenStarGradient from "./images/gradients/Star 5.svg";
 
 //exports
-// const fonts = {
-//   titleFont,
-//   contentFont,
-//   lightFont,
-//   btnFont,
-// };
-
 const fonts = {
-  titleFont: "@assets/fonts/outer-sans-bold.otf",
-  contentFont: "@assets/fonts/roobert-regular.ttf",
-  lightFont: "@assets/fonts/Sora-Regular.ttf",
-  btnFont: "@assets/fonts/outer-sans-medium.otf",
+  titleFont,
+  contentFont,
+  lightFont,
+  btnFont,
 };
-
 const icons = {
   calendar,
   calendarWhite,

@@ -11,7 +11,9 @@ import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { fetchServices, postServices } from "../../util/services";
 import Compressor from "compressorjs";
-
+import sendIcon from "../../assets/icons/send.svg";
+import loadingIcon from "../../assets/icons/loading.svg";
+import { useAuthContext } from "../../context/auth.context";
 const ImgUpload = ({ src, onChange }) => {
   return (
     <ImgUploadCtr>
@@ -74,30 +76,37 @@ const ImgUploadCtr = styled.div`
   }
 `;
 
-const Chirps = () => {
+const Chirps = ({ height }) => {
+  const { userDetails } = useAuthContext();
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
   const chirpText = useRef();
   const [photo, setPhoto] = useState(null);
   const [compressedPhoto, setCompressedPhoto] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
   const { eventID } = useParams();
-
-  const { data: chirps, isLoading: loadingChirps } = useQuery({
+  const [chirps, setChirps] = useState([]);
+  const { isLoading: loadingChirps, refetch: refetch } = useQuery({
     queryKey: ["fetchAllChurpsForChirpPage"],
     queryFn: async () => fetchServices.fetchAllChirps(eventID),
     enabled: eventID ? true : false,
     refetchInterval: false,
     refetchOnWindowFocus: true,
+    onSuccess: (res) => {
+      console.log(res);
+      setChirps(res);
+    },
   });
 
   const { isLoading: uploadingChirp, mutate: uploadChirp } = useMutation(
     postServices.uploadChirp,
     {
       onSuccess: (res) => {
+        refetch();
+
         setPhoto(null);
         setPreviewURL(null);
         chirpText.current.value = "";
-        toast.success("Note Uploaded Successfully !");
+        // toast.success("Note Uploaded Successfully !");
       },
       onError: (err) => {
         toast.error("Note Uploaded Failure !");
@@ -123,7 +132,7 @@ const Chirps = () => {
     }
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     // Create an object of formData
     const formData = new FormData();
@@ -131,7 +140,20 @@ const Chirps = () => {
     if (photo) formData.append("image", compressedPhoto);
     formData.append("text", chirpText.current.value);
     formData.append("event", eventID);
-    uploadChirp({ formData: formData, eventID: eventID });
+    await uploadChirp({ formData: formData, eventID: eventID });
+
+    setChirps((prev) => [
+      ...prev,
+      {
+        createdAt: new Date(),
+        event: eventID,
+        image: "false",
+        name: userDetails?.name,
+        text: chirpText.current.value,
+        updatedAt: new Date(),
+        wallet: userDetails?.wallet,
+      },
+    ]);
   };
 
   React.useEffect(() => {
@@ -142,7 +164,7 @@ const Chirps = () => {
   }, [setCurrentPageTitle, setCustomBackHeaderLink]);
 
   return (
-    <ChirpsCtr>
+    <ChirpsCtr height={height}>
       <form className="_chirpForm" onSubmit={onSubmit}>
         <div className="_chirpInput">
           <input
@@ -152,8 +174,18 @@ const Chirps = () => {
             ref={chirpText}
           />
           <ImgUpload onChange={photoUpload} src={previewURL} />
-          <Button className="_submitBtn" type="submit">
-            {uploadingChirp ? "Wait ..." : "Submit"}
+          <Button bgColor="transparent" className="_submitBtn" type="submit">
+            {uploadingChirp ? (
+              <img
+                src={loadingIcon}
+                height={25}
+                width={25}
+                alt="waiting"
+                className="waitingIcon"
+              />
+            ) : (
+              <img src={sendIcon} height={25} width={25} alt="submit" />
+            )}
           </Button>
         </div>
       </form>
@@ -198,9 +230,11 @@ const ChirpsCtr = styled.div`
     padding-bottom: 1rem;
   }
   ._allChirps {
+    max-height: ${(props) => props.height};
     margin-top: 1rem;
     ${mixins.flexCol};
     gap: 1rem;
+    overflow:auto;
   }
   ._chirpForm {
     width: 100%;
@@ -239,6 +273,20 @@ const ChirpsCtr = styled.div`
     font-size: var(--fs-r2);
     ._placeholder {
       width: 50px;
+    }
+    .waitingIcon{
+      animation: rotate 1s linear infinite;
+    }
+    @keyframes rotate {
+      0%{
+        transform: rotate(0deg);
+      }
+      50%{
+        transform: rotate(180deg);
+      }
+      100%{
+        transform: rotate(360deg);
+      }
     }
 `;
 export default Chirps;

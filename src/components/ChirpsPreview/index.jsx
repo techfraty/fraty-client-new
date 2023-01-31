@@ -5,7 +5,7 @@ import assets from "../../assets";
 import { mixins } from "../../styles/global.theme";
 import ChirpCard from "../ChirpCard";
 import Chirps from "../../pages/Chirps/index";
-const ChirpsPreview = ({ chirps, eventID }) => {
+const ChirpsPreview = ({ height, chirps, eventID }) => {
   const navigate = useNavigate();
   const openAllChirps = () => {
     navigate(`/chirps/${eventID}`);
@@ -19,7 +19,7 @@ const ChirpsPreview = ({ chirps, eventID }) => {
           See all chirps
         </span>
       </div>
-      <Chirps></Chirps>
+      <Chirps height={height}></Chirps>
     </ChirpsCtr>
   );
 };

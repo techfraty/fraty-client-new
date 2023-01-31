@@ -161,10 +161,15 @@ const EventPage = () => {
         const formData = new FormData();
         // Update the formData object
         const { uploadChirp } = postServices;
-        formData.append("text", `${userDetails?.name} has joined the event.`);
-        formData.append("event", selectedEvent?._id);
+        if (userDetails?.name) {
+          formData.append(
+            "text",
+            `${userDetails?.name} is coming to the party! 💃.`
+          );
+          formData.append("event", selectedEvent?._id);
 
-        uploadChirp({ formData: formData, eventID: selectedEvent?._id });
+          uploadChirp({ formData: formData, eventID: selectedEvent?._id });
+        }
         if (selectedEvent?.waitList === false) setInWaitingRoom(false);
         if (!alreadyRSVPed.current)
           toast.success("User Onborded Successfully !");
@@ -208,15 +213,24 @@ const EventPage = () => {
         eventID: selectedEvent?._id,
         address: currentUser?.phoneNumber,
       });
-      console.log(data);
+      let waiting = [];
+      let waitingIds = [];
+      if (selectedEvent?.waitList) {
+        waiting = await fetchServices.fetchWaithinglist(selectedEvent?._id);
+        waitingIds = waiting?.data?.map((ev) => ev._id);
+      }
+      console.log({ data, waiting });
       const filteredMembers = data?.members?.filter(
-        (m) => m?.wallet !== userDetails?.wallet
+        (m) =>
+          m?._id !== selectedEvent?.creator &&
+          waitingIds?.findIndex((e) => e === m?._id) === -1
       );
       setMembers(filteredMembers);
+
       setLoading(false);
     };
     fetchEvents();
-  }, [selectedEvent?._id, currentUser?.phoneNumber]);
+  }, [selectedEvent, currentUser?.phoneNumber]);
   useEffect(() => {
     const fetchFratyUser = async () => {
       try {
@@ -228,7 +242,9 @@ const EventPage = () => {
         console.log(res);
         setInWaitingRoom(res?.data?.inWaitingRoom);
         if (selectedEvent?.waitList === false) setInWaitingRoom(false);
-        setHasRsvpd(true);
+        if (res?.data?.Status === "going") {
+          setHasRsvpd(true);
+        }
       } catch (err) {
         setHasRsvpd(false);
       }
@@ -290,10 +306,15 @@ const EventPage = () => {
   }
 
   useEffect(() => {
-    if (rsvpStatus !== undefined && rsvpStatus !== null && rsvpStatus?.length) {
+    if (
+      hasRsvpd === false &&
+      rsvpStatus !== undefined &&
+      rsvpStatus !== null &&
+      rsvpStatus?.length
+    ) {
       handleClickRSVPResponse(rsvpStatus);
     }
-  }, [rsvpStatus]);
+  }, [rsvpStatus, selectedEvent, hasRsvpd]);
 
   function handleSignup() {
     if (!userConnected) {
@@ -333,16 +354,33 @@ const EventPage = () => {
   if (isLoading || loading) return <Loader />;
   console.log(selectedEvent, inWaitingRoom, hasRsvpd, isEventCreator);
   const getImageTop = () => {
-    const top = (selectedEvent?.name?.length / 33) * 40 + 70;
+    const top = (selectedEvent?.name?.length / 33) * 40 + 50;
     return `${top}px`;
   };
-  const { removeRsvpUser } = authServices;
+  const { updateRSVPStatus } = authServices;
   const removeRSVP = async () => {
     console.log({ userDetails });
-    const data = removeRsvpUser({
-      wallet: userDetails?.wallet,
-      eventId: selectedEvent?._id,
-    });
+
+    const formData = new FormData();
+    // Update the formData object
+    const { uploadChirp } = postServices;
+    formData.append(
+      "text",
+      `${userDetails?.name} will be missing out all the fun :( .`
+    );
+    formData.append("event", selectedEvent?._id);
+
+    await uploadChirp({ formData: formData, eventID: selectedEvent?._id });
+    // const data = removeRsvpUser({
+    //   wallet: userDetails?.wallet,
+    //   eventId: selectedEvent?._id,
+    // });
+    console.log(userDetails);
+    const data = await updateRSVPStatus(
+      selectedEvent?._id,
+      userDetails?.wallet,
+      "not_going"
+    );
     console.log(data);
     setHasRsvpd(false);
   };
@@ -352,7 +390,7 @@ const EventPage = () => {
     setNotGoingModalText("Do you really want to miss such an awesome Event?");
     setNotGoingModalAfterRsvp(true);
   };
-
+  console.log(selectedEvent?._id);
   return (
     <EventCtr>
       <Helmet>
@@ -582,7 +620,7 @@ const EventPage = () => {
                     </div>
                   )} */}
               </div>
-              {(hasRsvpd || isEventCreator) && (
+              {
                 <>
                   {" "}
                   <AppBtn
@@ -595,8 +633,10 @@ const EventPage = () => {
                       navigate("/members", {
                         state: {
                           Eventid: selectedEvent?._id,
+                          creator: selectedEvent?.creator,
                           wallet: currentUser?.phoneNumber,
                           isEventCreator,
+                          waitList: selectedEvent?.waitList,
                         },
                       });
                     }}
@@ -617,9 +657,13 @@ const EventPage = () => {
                       setLightBoxIdx(idx);
                     }}
                   />
-                  <ChirpsPreview chirps={chirps} eventID={eventIDParam} />
+                  <ChirpsPreview
+                    height={"400px"}
+                    chirps={chirps}
+                    eventID={eventIDParam}
+                  />
                 </>
-              )}
+              }
             </div>
           </div>
           {isEventCreator && (
@@ -864,7 +908,7 @@ const EventCtr = styled.div`
     gap: 20px;
   }
   .discbox {
-    color: #00000080;
+    color: black;
     background: transparent;
     text-align: center;
     border-radius: 24px;
@@ -955,7 +999,7 @@ const EventCtr = styled.div`
     top: 20px;
     left: -2.5%;
     width: 105%;
-    height: 150%;
+    height: 100%;
     background: rgba(245, 235, 233, 0.3);
     backdrop-filter: blur(6px);
     z-index: 1;

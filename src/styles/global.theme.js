@@ -110,6 +110,9 @@ export const GlobalStyles = styled.createGlobalStyle`
     margin: 0;
     padding: 0;
     font: inherit;
+    p {
+      margin: 0;
+    }
     -webkit-tap-highlight-color: transparent; /* transparent with keyword */
   }
 
