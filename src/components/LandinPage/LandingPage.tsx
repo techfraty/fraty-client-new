@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import iphoneimage from "../../assets/images/iPhone 11 Pro/X - 1.png";
 import assets from "../../assets";
-import AppBtn from "./../../components/common/Btn";
+import AppBtn from "../common/Btn";
 import glasses from "../../assets/images/Group.svg";
 import pouyingFace from "../../assets/images/Smiling face with heart-eyes.svg";
 import smilingFace from "../../assets/images/Pouting face.svg";
@@ -16,13 +16,13 @@ import {
   useViewportScroll,
 } from "framer-motion";
 import outlinedTextFraty from "../../assets/images/overlays/FRATY.svg";
-import AuthModal from "../../components/AuthModal/AuthModal";
+import AuthModal from "../AuthModal/AuthModal";
 import { useGlobalState } from "../../context/global.context";
 import flyerImage1 from "../../assets/images/flyer/image1.png";
 import flyerImage2 from "../../assets/images/flyer/image2.png";
 import flyerImage3 from "../../assets/images/flyer/image3.png";
 import flyerImage4 from "../../assets/images/flyer/image4.png";
-import Footer from "../../components/Footer/Footer"
+import Footer from "../Footer/Footer";
 
 const LandingPage = () => {
   const [calculatedWidth, setCalculatedWidth] = React.useState(0);
@@ -353,7 +353,7 @@ const LandingPage = () => {
             <img src={eyeball} alt="eyeball" />
           </div>
         </div>
-      <Footer/>
+        <Footer />
       </LandingPageCtr>
       {showAuthModal && (
         <AuthModal
@@ -571,7 +571,7 @@ const LandingPageCtr = styled.div`
     animation: marquee 32s linear infinite;
   }
 
-  .footer{
+  .footer {
     background-color: black;
     color: white;
     width: 100%;
@@ -581,26 +581,26 @@ const LandingPageCtr = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1rem;
-    ._footer_l{
+    ._footer_l {
       width: 100%;
       padding-left: 0.7rem;
       display: flex;
       justify-content: left;
       align-items: left;
     }
-    ._footer_m{
+    ._footer_m {
       width: 200%;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    ._footer_r{
+    ._footer_r {
       display: flex;
       width: 100%;
       display: flex;
       justify-content: right;
       align-items: right;
-      img{
+      img {
         filter: invert(1);
         padding: 0px 5px;
       }
@@ -608,7 +608,7 @@ const LandingPageCtr = styled.div`
   }
 
   @media only screen and (max-width: 600px) {
-    .footer{
+    .footer {
       width: 100%;
       // background-color: black;
       padding: 1.2rem 0rem;
@@ -617,17 +617,17 @@ const LandingPageCtr = styled.div`
       justify-content: center;
       align-items: center;
       font-size: 1.2rem;
-      ._footer_l{
+      ._footer_l {
         width: auto;
       }
-      ._footer_m{
+      ._footer_m {
         padding: 0.5rem 0.5rem;
         width: auto;
       }
-      ._footer_r{
-        img{
+      ._footer_r {
+        img {
           filter: invert(1);
-          padding : 0.5rem 1rem;
+          padding: 0.5rem 1rem;
         }
         width: auto;
       }
