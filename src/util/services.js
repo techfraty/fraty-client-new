@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTH_TOKEN } from "./constants";
 
-export const BE_URL = process.env.REACT_APP_API_URL;
+export const BE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function authHeader(eventID) {
   const user = JSON.parse(localStorage.getItem(eventID));
