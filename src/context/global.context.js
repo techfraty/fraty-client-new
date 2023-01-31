@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useAccount, useQuery } from "wagmi";
+// import { useLocation } from "react-router-dom";
+// import { useAccount, useQuery } from "wagmi";
 import { FRATY_EVENTS } from "../util/constants";
 import { fetchServices } from "../util/services";
 import { useAuthContext } from "./auth.context";

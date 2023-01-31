@@ -1,12 +1,14 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import insta from "../../assets/icons/insta.svg";
 import mail from "../../assets/icons/mail.svg";
 import twitter from "../../assets/icons/twitter.svg";
+import { useRouter } from "next/router";
 
 export default function Footer() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const router = useRouter();
   return (
     <div>
       <LandingPageCtr>
@@ -14,7 +16,7 @@ export default function Footer() {
           <span className="_footer_l">
             <p
               onClick={() => {
-                navigate("/privacy");
+                router.push("/privacy");
               }}
             >
               Privacy Policy

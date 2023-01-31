@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import iphoneimage from "../../assets/images/iPhone 11 Pro/X - 1.png";
+import iphoneimage from "../../assets/images/iPhone 11 Pro/X - 1.svg";
 import assets from "../../assets";
 import AppBtn from "../common/Btn";
 import glasses from "../../assets/images/Group.svg";
@@ -23,6 +23,7 @@ import flyerImage2 from "../../assets/images/flyer/image2.png";
 import flyerImage3 from "../../assets/images/flyer/image3.png";
 import flyerImage4 from "../../assets/images/flyer/image4.png";
 import Footer from "../Footer/Footer";
+import Image from "next/image";
 
 const LandingPage = () => {
   const [calculatedWidth, setCalculatedWidth] = React.useState(0);
@@ -114,17 +115,17 @@ const LandingPage = () => {
     <div>
       <LandingPageCtr>
         <div className="container1" ref={containerRef}>
-          <img className="iphone" src={iphoneimage} alt="phone" />
+          <Image className="iphone" src={iphoneimage} alt="phone" />
           <div className="__Gradient center phoneBackGradient">
-            <img src={assets.gradients.sevenstarGradient} alt="gradient" />
+            <Image src={assets.gradients.sevenstarGradient} alt="gradient" />
           </div>
           <div
             className="stripe left stripeLeft"
             style={{ width: calculatedWidth }}
           >
-            <div class="marquee">
-              <div class="track">
-                <div class="content">
+            <div className="marquee">
+              <div className="track">
+                <div className="content">
                   Party planning becomes delightful now. Party planning becomes
                   delightful now. Party planning becomes delightful now. Party
                   planning becomes delightful now.
@@ -136,9 +137,9 @@ const LandingPage = () => {
             className="stripe right stripeRight"
             style={{ width: calculatedWidth }}
           >
-            <div class="marquee">
-              <div class="track">
-                <div class="content">
+            <div className="marquee">
+              <div className="track">
+                <div className="content">
                   Welcome to the social experiences platform. Welcome to the
                   social experiences platform. Welcome to the social experiences
                   platform. Welcome to the social experiences platform.
@@ -177,13 +178,13 @@ const LandingPage = () => {
         </div>
         <div className="container3">
           <div className="group top left">
-            <img src={assets.overlays.Group2} />
+            <Image alt="overlay" src={assets.overlays.Group2} />
           </div>
           <div className="group">
-            <img src={assets.overlays.GroupText} />
+            <Image alt="overlay" src={assets.overlays.GroupText} />
           </div>
           {/* <div style={{ zIndex: 3 }}>
-          <img src={assets.overlays.Group3} />
+          <Image src={assets.overlays.Group3} />
         </div> */}
           <div style={{ marginTop: "50px" }}>
             {[...Array(10)].map((e, i) => {
@@ -202,22 +203,22 @@ const LandingPage = () => {
                   }}
                 >
                   {[...Array(10).fill("Fraty")].map((str) => (
-                    <img src={outlinedTextFraty} />
+                    <Image alt="image" src={outlinedTextFraty} />
                   ))}
                 </motion.div>
               );
             })}
           </div>
           <div className="__Gradient left">
-            <img src={assets.gradients.greenStarGradient} alt="gradient" />
+            <Image src={assets.gradients.greenStarGradient} alt="gradient" />
           </div>
           <div className="group bottom" style={{ right: 0 }}>
-            <img src={assets.overlays.Group1} />
+            <Image alt="image" src={assets.overlays.Group1} />
           </div>
         </div>
         <div className="container4">
           <div className="__Gradient right">
-            <img src={assets.gradients.blueStarGradient} alt="gradient" />
+            <Image src={assets.gradients.blueStarGradient} alt="gradient" />
           </div>
           <div
             style={{
@@ -226,7 +227,7 @@ const LandingPage = () => {
               transform: "rotate(-15.46deg)",
             }}
           >
-            <img
+            <Image
               src={assets.overlays.Group}
               alt="gradient"
               style={{
@@ -247,7 +248,7 @@ const LandingPage = () => {
                 overflow: "hidden",
               }}
             >
-              <img
+              <Image
                 src={flyerImage?.image}
                 alt="flyer"
                 style={{
@@ -297,10 +298,10 @@ const LandingPage = () => {
         </div>
         <div className="container5">
           <div style={{ zIndex: 3, marginTop: "45px", marginBottom: "15px" }}>
-            <img src={glasses} alt="glasses" />
+            <Image src={glasses} alt="glasses" />
           </div>
           <div className="__Gradient center" style={{ left: "30%" }}>
-            <img
+            <Image
               style={{ scale: "2" }}
               src={assets.gradients.sevenstarGradient}
               alt="gradient"
@@ -314,15 +315,19 @@ const LandingPage = () => {
               position: "relative",
             }}
           >
-            <img src={smilingFace} alt="smiling" className="smilingemoji" />
-            <img src={partyingText} alt="text" />
-            <img src={pouyingFace} alt="pouting" className="poutingemoji" />
+            <Image src={smilingFace} alt="smiling" className="smilingemoji" />
+            <Image src={partyingText} alt="text" />
+            <Image src={pouyingFace} alt="pouting" className="poutingemoji" />
           </div>
           <p>Make your life easy with:</p>
         </div>
         <div className="container6">
           <div>
-            <img src={stackImage} className="stackImage" alt="stack of text" />
+            <Image
+              src={stackImage}
+              className="stackImage"
+              alt="stack of text"
+            />
           </div>
           <AppBtn
             margin={"15px 0"}
@@ -350,7 +355,7 @@ const LandingPage = () => {
                 Host A Party
               </AppBtn>
             </div>
-            <img src={eyeball} alt="eyeball" />
+            <Image src={eyeball} alt="eyeball" />
           </div>
         </div>
         <Footer />
