@@ -1,4 +1,5 @@
 import { Html, Head, Main, NextScript } from "next/document";
+import { GlobalStyles } from "../styles/global.theme";
 
 export default function Document() {
   return (
@@ -8,7 +9,6 @@ export default function Document() {
           name="description"
           content="Planning parties made simple and delightful for all the smexy people out their."
         />
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
         <meta
           property="og:title"
           content="Heyyoo, You have been invited to party on Fraty!"
@@ -52,6 +52,7 @@ export default function Document() {
         <title>Heyyoo, You have been invited to party on Fraty!</title>
       </Head>
       <body>
+        <GlobalStyles />
         <Main />
         <NextScript />
       </body>
