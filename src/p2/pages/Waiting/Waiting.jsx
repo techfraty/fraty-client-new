@@ -7,9 +7,11 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { useGlobalState } from "../../context/global.context";
 import Button from "../../components/Button/Button";
+import { useAuthContext } from "../../context/auth.context";
 
 const Waiting = () => {
   const { id: eventIDParam } = useParams();
+  const { currentUser } = useAuthContext();
   const [waitinglist, setWaitinglist] = React.useState([]);
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
 
@@ -17,7 +19,10 @@ const Waiting = () => {
     queryKey: ["fetchWaithing"],
     queryFn: async () => fetchServices.fetchWaithinglist(eventIDParam),
     onSuccess: (data) => {
-      setWaitinglist(data.data);
+      console.log(data, currentUser);
+      setWaitinglist(
+        data.data.filter((prev) => prev?._id !== currentUser?.id?._id)
+      );
     },
     refetchInterval: 10000,
     cacheTime: 0,

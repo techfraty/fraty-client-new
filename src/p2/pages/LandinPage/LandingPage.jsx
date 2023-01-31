@@ -8,6 +8,7 @@ import pouyingFace from "../../assets/images/Smiling face with heart-eyes.svg";
 import smilingFace from "../../assets/images/Pouting face.svg";
 import partyingText from "../../assets/images/We love partying but hate planning.svg";
 import stackImage from "../../assets/images/overlays/Group 26902.svg";
+import stackImageFullWidth from "../../assets/images/falling_stack_fullscreen.svg";
 import eyeball from "../../assets/images/overlays/eyeballimage.svg";
 import {
   motion,
@@ -22,7 +23,7 @@ import flyerImage1 from "../../assets/images/flyer/image1.png";
 import flyerImage2 from "../../assets/images/flyer/image2.png";
 import flyerImage3 from "../../assets/images/flyer/image3.png";
 import flyerImage4 from "../../assets/images/flyer/image4.png";
-import Footer from "../../components/Footer/Footer"
+import Footer from "../../components/Footer/Footer";
 
 const LandingPage = () => {
   const [calculatedWidth, setCalculatedWidth] = React.useState(0);
@@ -114,9 +115,18 @@ const LandingPage = () => {
     <div>
       <LandingPageCtr>
         <div className="container1" ref={containerRef}>
-          <img className="iphone" src={iphoneimage} alt="phone" />
+          <img
+            decoding="sync"
+            className="iphone"
+            src={iphoneimage}
+            alt="phone"
+          />
           <div className="__Gradient center phoneBackGradient">
-            <img src={assets.gradients.sevenstarGradient} alt="gradient" />
+            <img
+              decoding="sync"
+              src={assets.gradients.sevenstarGradient}
+              alt="gradient"
+            />
           </div>
           <div
             className="stripe left stripeLeft"
@@ -177,10 +187,10 @@ const LandingPage = () => {
         </div>
         <div className="container3">
           <div className="group top left">
-            <img src={assets.overlays.Group2} />
+            <img decoding="sync" src={assets.overlays.Group2} />
           </div>
           <div className="group">
-            <img src={assets.overlays.GroupText} />
+            <img decoding="sync" src={assets.overlays.GroupText} />
           </div>
           {/* <div style={{ zIndex: 3 }}>
           <img src={assets.overlays.Group3} />
@@ -202,22 +212,30 @@ const LandingPage = () => {
                   }}
                 >
                   {[...Array(10).fill("Fraty")].map((str) => (
-                    <img src={outlinedTextFraty} />
+                    <img decoding="sync" src={outlinedTextFraty} />
                   ))}
                 </motion.div>
               );
             })}
           </div>
           <div className="__Gradient left">
-            <img src={assets.gradients.greenStarGradient} alt="gradient" />
+            <img
+              decoding="sync"
+              src={assets.gradients.greenStarGradient}
+              alt="gradient"
+            />
           </div>
           <div className="group bottom" style={{ right: 0 }}>
-            <img src={assets.overlays.Group1} />
+            <img decoding="sync" src={assets.overlays.Group1} />
           </div>
         </div>
         <div className="container4">
           <div className="__Gradient right">
-            <img src={assets.gradients.blueStarGradient} alt="gradient" />
+            <img
+              decoding="sync"
+              src={assets.gradients.blueStarGradient}
+              alt="gradient"
+            />
           </div>
           <div
             style={{
@@ -227,6 +245,7 @@ const LandingPage = () => {
             }}
           >
             <img
+              decoding="sync"
               src={assets.overlays.Group}
               alt="gradient"
               style={{
@@ -248,6 +267,7 @@ const LandingPage = () => {
               }}
             >
               <img
+                decoding="sync"
                 src={flyerImage?.image}
                 alt="flyer"
                 style={{
@@ -297,10 +317,11 @@ const LandingPage = () => {
         </div>
         <div className="container5">
           <div style={{ zIndex: 3, marginTop: "45px", marginBottom: "15px" }}>
-            <img src={glasses} alt="glasses" />
+            <img decoding="sync" src={glasses} alt="glasses" />
           </div>
           <div className="__Gradient center" style={{ left: "30%" }}>
             <img
+              decoding="sync"
               style={{ scale: "2" }}
               src={assets.gradients.sevenstarGradient}
               alt="gradient"
@@ -314,15 +335,34 @@ const LandingPage = () => {
               position: "relative",
             }}
           >
-            <img src={smilingFace} alt="smiling" className="smilingemoji" />
-            <img src={partyingText} alt="text" />
-            <img src={pouyingFace} alt="pouting" className="poutingemoji" />
+            <img
+              decoding="sync"
+              src={smilingFace}
+              alt="smiling"
+              className="smilingemoji"
+            />
+            <img decoding="sync" src={partyingText} alt="text" />
+            <img
+              decoding="sync"
+              src={pouyingFace}
+              alt="pouting"
+              className="poutingemoji"
+            />
           </div>
           <p>Make your life easy with:</p>
         </div>
         <div className="container6">
           <div>
-            <img src={stackImage} className="stackImage" alt="stack of text" />
+            <img
+              decoding="sync"
+              src={window.innerWidth <= 500 ? stackImage : stackImageFullWidth}
+              className="stackImage"
+              style={{
+                maxWidth: window.innerWidth <= 500 ? "auto" : "600px",
+                margin: "0 auto",
+              }}
+              alt="stack of text"
+            />
           </div>
           <AppBtn
             margin={"15px 0"}
@@ -350,10 +390,10 @@ const LandingPage = () => {
                 Host A Party
               </AppBtn>
             </div>
-            <img src={eyeball} alt="eyeball" />
+            <img decoding="sync" src={eyeball} alt="eyeball" />
           </div>
         </div>
-      <Footer/>
+        <Footer />
       </LandingPageCtr>
       {showAuthModal && (
         <AuthModal
@@ -407,6 +447,11 @@ const LandingPageCtr = styled.div`
     transform: translateX(-50%);
     width: 100%;
     max-width: var(--max-app-width);
+  }
+  @media screen and (min-width: 500px) {
+    left: 0;
+    transform: translateX(0);
+    max-width: 100%;
   }
   .container1,
   .container2,
@@ -532,6 +577,32 @@ const LandingPageCtr = styled.div`
       align-items: center;
     }
   }
+  @media screen and (min-width: 500px) {
+    .stripeLeft {
+      top: 247px;
+      transform: rotate(19deg);
+    }
+    .stripeRight {
+      left: -154px;
+      transform: rotate(341deg);
+    }
+    .container2,
+    .container3,
+    .container4,
+    .container5 {
+      margin-top: 100px;
+    }
+    .center {
+      width: 40%;
+    }
+    .group.left.top {
+      top: 15%;
+      left: 30%;
+    }
+    .group.bottom {
+      right: 25% !important;
+    }
+  }
   .stripeLeft .track,
   .stripeRight .track {
     font-family: var(--ff-title);
@@ -571,7 +642,7 @@ const LandingPageCtr = styled.div`
     animation: marquee 32s linear infinite;
   }
 
-  .footer{
+  .footer {
     background-color: black;
     color: white;
     width: 100%;
@@ -581,34 +652,33 @@ const LandingPageCtr = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1rem;
-    ._footer_l{
+    ._footer_l {
       width: 100%;
       padding-left: 0.7rem;
       display: flex;
       justify-content: left;
       align-items: left;
     }
-    ._footer_m{
+    ._footer_m {
       width: 200%;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    ._footer_r{
+    ._footer_r {
       display: flex;
       width: 100%;
       display: flex;
       justify-content: right;
       align-items: right;
-      img{
-        filter: invert(1);
+      img {
         padding: 0px 5px;
       }
     }
   }
 
   @media only screen and (max-width: 600px) {
-    .footer{
+    .footer {
       width: 100%;
       // background-color: black;
       padding: 1.2rem 0rem;
@@ -617,17 +687,16 @@ const LandingPageCtr = styled.div`
       justify-content: center;
       align-items: center;
       font-size: 1.2rem;
-      ._footer_l{
+      ._footer_l {
         width: auto;
       }
-      ._footer_m{
+      ._footer_m {
         padding: 0.5rem 0.5rem;
         width: auto;
       }
-      ._footer_r{
-        img{
-          filter: invert(1);
-          padding : 0.5rem 1rem;
+      ._footer_r {
+        img {
+          padding: 0.5rem 1rem;
         }
         width: auto;
       }

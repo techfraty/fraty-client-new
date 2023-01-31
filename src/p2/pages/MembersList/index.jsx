@@ -24,9 +24,17 @@ const MembersList = () => {
         eventID: state?.Eventid,
         address: state?.wallet,
       });
-      console.log(data);
+      const waitlist = state?.waitList;
+      let waiting = [];
+      let waitingIds = [];
+      if (waitlist) {
+        waiting = await fetchServices.fetchWaithinglist(state?.Eventid);
+        waitingIds = waiting?.data?.map((ev) => ev._id);
+      }
       const filteredMembers = data?.members?.filter(
-        (m) => m?.wallet !== userDetails?.wallet
+        (m) =>
+          m?._id !== state?.creator &&
+          waitingIds?.findIndex((e) => e === m?._id) === -1
       );
       setMembers(filteredMembers);
       setLoading(false);
@@ -36,6 +44,7 @@ const MembersList = () => {
     fetchEvents();
   }, []);
 
+  console.log({ members });
   useEffect(() => {
     setCustomBackHeaderLink(null);
   }, [setCustomBackHeaderLink]);
@@ -48,11 +57,12 @@ const MembersList = () => {
       )}
       {members?.map((member, idx) => (
         <MemberCard
+          creator={state?.creator}
           isEventCreator={state?.isEventCreator}
           member={member}
           event={state?.Eventid}
           key={member?.id}
-          bgColor={"#F5EBE9"}
+          bgColor={member.status !== "not_going" ? "green" : "#C6B1E9"}
           setMembers={setMembers}
         />
       ))}

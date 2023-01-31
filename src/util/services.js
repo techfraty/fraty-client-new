@@ -194,7 +194,7 @@ export const fetchServices = {
 };
 //post services
 const uploadPhoto = async ({ formData, eventID }) => {
-  await axios.post(BE_URL + "/fraty/image", formData, {
+  return await axios.post(BE_URL + "/fraty/image", formData, {
     headers: customAuthHeader(),
   });
 };
@@ -308,15 +308,13 @@ const getUserDetails = async (token) => {
   return userData;
 };
 
-const updateRSVPStatus = async (eventID) => {
-  console.log("event ID", eventID);
-  const res = await axios.post(
-    BE_URL + `/fraty/rsvp`,
-    { rsvp: "going" },
-    {
-      headers: authHeader(eventID),
-    }
-  );
+const updateRSVPStatus = async (eventID, wallet, status) => {
+  console.log("event ID", eventID, wallet, status);
+  const res = await axios.post(BE_URL + `/fraty/rsvp-status`, {
+    wallet,
+    event: eventID,
+    status,
+  });
   const userData = await res.data.message;
   return userData;
 };

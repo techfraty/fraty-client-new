@@ -7,9 +7,17 @@ import { mixins } from "../../styles/global.theme";
 import { authServices } from "../../util/services";
 import AppBtn from "../common/Btn";
 
-const MemberCard = ({ member, event, bgColor, isEventCreator, setMembers }) => {
+const MemberCard = ({
+  member,
+  event,
+  bgColor,
+  isEventCreator,
+  setMembers,
+  creator,
+}) => {
   const { userDetails } = useAuthContext();
   console.log({ member, userDetails });
+  console.log(member?._id !== userDetails?._id);
   const removeRSVP = async () => {
     const wallet = member?.wallet;
     const { removeRsvpUser } = authServices;
@@ -21,8 +29,10 @@ const MemberCard = ({ member, event, bgColor, isEventCreator, setMembers }) => {
   return (
     <MemberCardCtr bgColor={bgColor}>
       <div className="_userInfo">
-        <p className="_name">{member?.name}</p>
-        {isEventCreator && (
+        <p className="_name">
+          {member?.name} {member?._id === creator ? " ( Host )" : ""}{" "}
+        </p>
+        {isEventCreator && member?._id !== userDetails?._id && (
           <AppBtn
             width="100px"
             square={true}
@@ -33,52 +43,60 @@ const MemberCard = ({ member, event, bgColor, isEventCreator, setMembers }) => {
           </AppBtn>
         )}
       </div>
-      <div className="_extra">
-        {member?.profession && (
-          <p>
-            <img src={assets.icons.user} alt="" className="_icon" />
-            <span className="_profession">{member?.profession}</span>
-          </p>
-        )}
-        {member?.song && (
-          <p>
-            <img src={assets.icons.music} alt="" className="_icon" />
-            <span className="_song">{member?.song}</span>
-          </p>
-        )}
-      </div>
-      <div className="_userSocials">
-        {member?.social?.web && (
-          <a
-            className="_handle web"
-            rel="noreferrer"
-            href={member?.social?.web}
-            target="_blank"
-          >
-            <img src={assets.icons.web} alt="" />
-          </a>
-        )}
-        {member?.social?.twitter && (
-          <a
-            className="_handle twitter"
-            rel="noreferrer"
-            href={`https://twitter.com/${member?.social?.twitter}`}
-            target="_blank"
-          >
-            <img src={assets.icons.twitter} alt="" />
-          </a>
-        )}
-        {member?.social?.instagram && (
-          <a
-            className="_handle insta"
-            rel="noreferrer"
-            href={`https://www.instagram.com/${member?.social?.instagram}`}
-            target="_blank"
-          >
-            <img src={assets.icons.instagram} alt="" />
-          </a>
-        )}
-      </div>
+      {/* <div className="_extra">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-evenly",
+            gap: "15px",
+          }}
+        >
+          {member?.profession && (
+            <p>
+              <img src={assets.icons.user} alt="" className="_icon" />
+              <span className="_profession">{member?.profession}</span>
+            </p>
+          )}
+          {member?.song && (
+            <p>
+              <img src={assets.icons.music} alt="" className="_icon" />
+              <span className="_song">{member?.song}</span>
+            </p>
+          )}
+        </div>
+        <div className="_userSocials">
+          {member?.social?.web && (
+            <a
+              className="_handle web"
+              rel="noreferrer"
+              href={member?.social?.web}
+              target="_blank"
+            >
+              <img src={assets.icons.web} alt="" />
+            </a>
+          )}
+          {member?.social?.twitter && (
+            <a
+              className="_handle twitter"
+              rel="noreferrer"
+              href={`https://twitter.com/${member?.social?.twitter}`}
+              target="_blank"
+            >
+              <img src={assets.icons.twitter} alt="" />
+            </a>
+          )}
+          {member?.social?.instagram && (
+            <a
+              className="_handle insta"
+              rel="noreferrer"
+              href={`https://www.instagram.com/${member?.social?.instagram}`}
+              target="_blank"
+            >
+              <img src={assets.icons.instagram} alt="" />
+            </a>
+          )}
+        </div>
+      </div> */}
     </MemberCardCtr>
   );
 };
@@ -91,6 +109,7 @@ const MemberCardCtr = styled.div`
   justify-content: space-between;
   background: ${(props) => props?.bgColor ?? "#F5EBE9"};
   ._userInfo {
+    align-items: center;
     font-size: 1rem;
     display: flex;
     justify-content: space-between;
@@ -113,8 +132,9 @@ const MemberCardCtr = styled.div`
     width: 100%;
     font-size: 0.7rem;
     ${mixins.flexRowCenter}
-    justify-content: initial;
+    justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 5px;
     gap: 0.35rem;
     p {
       ${mixins.flexRowCenter}

@@ -722,6 +722,9 @@ const Switchs = styled.div`
 `;
 
 const FormContainer = styled.div`
+  #name::placeholder {
+    color: grey;
+  }
   .twoform {
     display: flex;
     justify-content: space-between;
@@ -793,20 +796,6 @@ const FormInput = styled.div`
     left: 4px;
     content: "";
     background: url(${rupeeIcon}) no-repeat;
-    background-size: contain;
-  }
-  &:has(input#costPerPerson)::after {
-    height: 25px;
-    width: 50px;
-    z-index: 2;
-    position: absolute;
-    top: 7px;
-    right: 4px;
-    content: "";
-    background-size: contain;
-    background: url("${PayIcon}");
-    background-position: right;
-    background-repeat-x: no-repeat;
     background-size: contain;
   }
 

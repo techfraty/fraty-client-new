@@ -41,7 +41,7 @@ const AppBtn = (props) => {
       fontSize={props.fontSize}
       style={{
         width: props?.width,
-        background: props?.btnBG,
+        background: props.disabled ? "gray" : props?.btnBG,
         borderRadius: props?.square ? "0" : "2rem",
         color: props.textColor || (props?.square ? "white" : "black"),
         border: props?.square ? "none" : "1px solid var(--color-primary)",

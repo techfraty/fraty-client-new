@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+// import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import assets from "../../assets";
 import { useAuthContext } from "../../context/auth.context";
@@ -9,10 +9,13 @@ import { AUTH_TOKEN } from "../../util/constants";
 import AuthModal from "../AuthModal/AuthModal";
 import AppBtn from "../common/Btn";
 import WalletDD from "../WalletDD";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const router = useRouter();
+
+  const { pathname } = router.pathname;
   const [showBrandHeader, setShowBrandHeader] = useState(false);
   const { currentPageTitle, customBackHeaderLink, setCustomBackHeaderLink } =
     useGlobalState();
@@ -38,24 +41,27 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
     if (customBackHeaderLink) {
       let tempLink = customBackHeaderLink;
       setCustomBackHeaderLink(null);
-      return navigate(tempLink);
+      return router.push(tempLink);
     }
     if (backToHome) {
-      navigate("/");
+      router.push("/");
     } else {
-      navigate(-1);
+      router.push(-1);
     }
   }
   const { setShowAuthModal, showAuthModal } = useGlobalState();
   const openAuthModel = () => {
     setShowAuthModal(true);
   };
-  const hasToken = localStorage.getItem(AUTH_TOKEN);
+  let hasToken;
+  useEffect(() => {
+    hasToken = localStorage.getItem(AUTH_TOKEN);
+  },[]);
   return (
     <HeaderCtr style={customStyle}>
       {showBrandHeader ? (
         <div className="_brandHeader">
-          <img
+          <Image
             className="_brandName"
             src={assets.logos.brand_logo}
             alt="brand-logo"
@@ -78,7 +84,7 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
             <div>
               {" "}
               <button className="_goBackBtn" onClick={handleClickBack}>
-                <img src={assets.icons.arrowLeft} alt="go-back" />
+                <Image src={assets.icons.arrowLeft} alt="go-back" />
               </button>
             </div>
           ) : null}
