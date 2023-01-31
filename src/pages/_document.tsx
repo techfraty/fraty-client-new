@@ -49,7 +49,6 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
-        <title>Heyyoo, You have been invited to party on Fraty!</title>
       </Head>
       <body>
         <GlobalStyles />

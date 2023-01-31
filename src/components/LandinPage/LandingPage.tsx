@@ -115,7 +115,12 @@ const LandingPage = () => {
     <>
       <LandingPageCtr>
         <div className="container1" ref={containerRef}>
-          <Image className="iphone" src={iphoneimage} alt="phone" />
+          <Image
+            className="iphone"
+            height={500}
+            src={iphoneimage}
+            alt="phone"
+          />
           <div className="__Gradient center phoneBackGradient">
             <Image src={assets.gradients.sevenstarGradient} alt="gradient" />
           </div>
@@ -499,8 +504,9 @@ const LandingPageCtr = styled.div`
   .iphone {
     height: 50vh;
     min-height: 500px;
-    z-index: 3;
+    z-index: 10;
   }
+
   .row {
     display: flex;
     flex-direction: row;
