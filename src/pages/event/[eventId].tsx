@@ -1,7 +1,10 @@
+import EventPage from "@/components/NewEvent";
 import React from "react";
 
 type Props = {};
 
-const EventPage = (props: Props) => {
-  return <div>EventPage</div>;
+const EventNextPage = (props: Props) => {
+  return <EventPage />;
 };
+
+export default EventNextPage;

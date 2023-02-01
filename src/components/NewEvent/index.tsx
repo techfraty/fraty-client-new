@@ -1,24 +1,21 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import React, { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import assets from "../../assets";
-import ChirpsPreview from "../../components/ChirpsPreview";
-import AppBtn from "../../components/common/Btn";
-import GalleryPreview from "../../components/GalleryPreview";
-import Loader from "../../components/Loader";
-import { useConnect, useAccount } from "wagmi";
+import ChirpsPreview from "../ChirpsPreview";
+import AppBtn from "../common/Btn";
+import GalleryPreview from "../GalleryPreview";
+import Loader from "../Loader";
 import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { authServices, fetchServices, postServices } from "../../util/services";
 import { atcb_action } from "add-to-calendar-button";
-import NotGoingPopup from "../../components/NotGoingPopup";
-import PaymentPopup from "../../components/PaymentPopup/PaymentPopup";
-import AuthModal from "../../components/AuthModal/AuthModal";
+import NotGoingPopup from "../NotGoingPopup";
+import PaymentPopup from "../PaymentPopup/PaymentPopup";
+import AuthModal from "../AuthModal/AuthModal";
 import { useAuthContext } from "../../context/auth.context";
-import Waiting from "../Waiting/Waiting";
+import Waiting from "../../p2/pages/Waiting/Waiting";
 import calendarIcon from "../../assets/icons/calendar.svg";
 import clockIcon from "../../assets/icons/clock.svg";
 import locationIcon from "../../assets/icons/location.svg";
@@ -30,6 +27,8 @@ import EventHeader from "./EventHeaderComponent";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { Helmet } from "react-helmet";
+import { useRouter } from "next/router";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const EventPage = () => {
   const {
@@ -69,11 +68,12 @@ const EventPage = () => {
   const [members, setMembers] = useState([]);
   const { currentUser, userDetails } = useAuthContext();
 
-  function isValidEventID(eventID) {
+  function isValidEventID(eventID: any) {
     return eventID !== undefined && eventID !== null && eventID?.length === 24;
   }
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const router = useRouter();
   console.log({ loading });
   /*
     Fetch event details
@@ -213,17 +213,17 @@ const EventPage = () => {
         eventID: selectedEvent?._id,
         address: currentUser?.phoneNumber,
       });
-      let waiting = [];
-      let waitingIds = [];
+      let waiting: any = [];
+      let waitingIds: any = [];
       if (selectedEvent?.waitList) {
         waiting = await fetchServices.fetchWaithinglist(selectedEvent?._id);
-        waitingIds = waiting?.data?.map((ev) => ev._id);
+        waitingIds = waiting?.data?.map((ev: any) => ev._id);
       }
       console.log({ data, waiting });
       const filteredMembers = data?.members?.filter(
         (m) =>
           m?._id !== selectedEvent?.creator &&
-          waitingIds?.findIndex((e) => e === m?._id) === -1
+          waitingIds?.findIndex((e: any) => e === m?._id) === -1
       );
       setMembers(filteredMembers);
 
@@ -259,7 +259,7 @@ const EventPage = () => {
     setCurrentPageTitle(selectedEvent?.name);
   }, [selectedEvent, setCurrentPageTitle]);
 
-  function removeEventFromLocalStorage(eventId) {
+  function removeEventFromLocalStorage(eventId: any) {
     let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
     if (prevEvents) {
       prevEvents = prevEvents.filter((e) => e !== eventId);
@@ -267,11 +267,11 @@ const EventPage = () => {
     }
   }
 
-  function navigateToResponse(type) {
-    return navigate(`/event/${eventIDParam}/${type}`, { replace: true });
+  function navigateToResponse(type: any) {
+    return router.replace(`/event/${eventIDParam}/${type}`);
   }
 
-  function handleClickRSVPResponse(type) {
+  function handleClickRSVPResponse(type: any) {
     if (!type) return;
 
     if (!currentUser) {
@@ -326,12 +326,12 @@ const EventPage = () => {
   }
 
   function handleClickEditEvent() {
-    navigate(`/createParty/edit/${selectedEvent?._id}`);
+    router.push(`/createParty/edit/${selectedEvent?._id}`);
   }
 
   function handleClickRSVPNow() {
     if (reactionContainerRef.current) {
-      reactionContainerRef.current.scrollIntoView({ behavior: "smooth" });
+      reactionContainerRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }
 
@@ -448,7 +448,7 @@ const EventPage = () => {
               <AppBtn
                 square={true}
                 onClick={() => {
-                  navigate(`/waitinglist/${selectedEvent?._id}`);
+                  router.push(`/waitinglist/${selectedEvent?._id}`);
                 }}
                 btnBG=" #6597B3"
               >
@@ -630,15 +630,17 @@ const EventPage = () => {
                     btnBG={"#6597B3"}
                     width={"100%"}
                     onClick={() => {
-                      navigate("/members", {
-                        state: {
-                          Eventid: selectedEvent?._id,
-                          creator: selectedEvent?.creator,
-                          wallet: currentUser?.phoneNumber,
-                          isEventCreator,
-                          waitList: selectedEvent?.waitList,
-                        },
-                      });
+                      router.push("/members");
+                      // {
+                      //   state: {
+                      //     Eventid: selectedEvent?._id,
+                      //     creator: selectedEvent?.creator,
+                      //     wallet: currentUser?.phoneNumber,
+                      //     isEventCreator,
+                      //     waitList: selectedEvent?.waitList,
+                      //   },
+                      // }
+                      //This state need to be there
                     }}
                   >
                     <span>Members list</span>
@@ -652,7 +654,7 @@ const EventPage = () => {
                   <GalleryPreview
                     images={eventImages}
                     eventID={eventIDParam}
-                    onClickImage={(idx) => {
+                    onClickImage={(idx: any) => {
                       setLightBoxToggler(true);
                       setLightBoxIdx(idx);
                     }}
@@ -689,7 +691,7 @@ const EventPage = () => {
                       removeRSVP();
                     }
                   : () => {
-                      navigate("/");
+                      router.push("/");
                     }
               }
               closeModal={() => setshowPopup(false)}
@@ -706,7 +708,7 @@ const EventPage = () => {
             open={lightBoxToggler}
             close={() => setLightBoxToggler(false)}
             index={lightBoxIdx}
-            slides={eventImages?.map((img) => ({ src: img.image }))}
+            slides={eventImages?.map((img: any) => ({ src: img.image }))}
           />
         </>
       )}
@@ -989,7 +991,9 @@ const EventCtr = styled.div`
   .overlay_image_reaction {
     width: 100% !important;
     height: 100% !important;
-    position: absolute;
+    position: absoimport { useQuery } from '@tanstack/react-query';
+lute;import { useQuery } from '@tanstack/react-query';
+
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

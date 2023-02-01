@@ -1,8 +1,7 @@
 import { atcb_action } from "add-to-calendar-button";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import AppBtn from "../../components/common/Btn";
+import AppBtn from "../common/Btn";
 import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { incrementTimeBy2Hours } from "../../util/utils";
