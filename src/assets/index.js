@@ -1,8 +1,9 @@
 //fonts
-import titleFont from "./fonts/outer-sans-bold.otf";
-import contentFont from "./fonts/roobert-regular.ttf";
-import lightFont from "./fonts/Sora-Regular.ttf";
-import btnFont from "./fonts/outer-sans-medium.otf";
+
+// import titleFont from "./fonts/outer-sans-bold.otf";
+// import contentFont from "./fonts/roobert-regular.ttf";
+// import lightFont from "./fonts/Sora-Regular.ttf";
+// import btnFont from "./fonts/outer-sans-medium.otf";
 
 //logos
 import brand_logo from "./images/brand/logo.svg";
@@ -81,11 +82,35 @@ import blueStarGradient from "./images/gradients/Star 4.svg";
 import greenStarGradient from "./images/gradients/Star 5.svg";
 
 //exports
+
+import localFont from "@next/font/local";
+
+const titleFont = localFont({
+  src: "../assets/fonts/outer-sans-bold.otf",
+  format: "otf",
+  weight: "700",
+});
+console.log({ titleFont });
+const contentFont = localFont({
+  src: "../assets/fonts/roobert-regular.ttf",
+  format: "ttf",
+  weight: "500",
+});
+const lightFont = localFont({
+  src: "../assets/fonts/Sora-Regular.ttf",
+  format: "ttf",
+  weight: "400",
+});
+const btnFont = localFont({
+  src: "../assets/fonts/outer-sans-medium.otf",
+  format: "ttf",
+  weight: "700",
+});
 const fonts = {
-  titleFont,
-  contentFont,
-  lightFont,
-  btnFont,
+  titleFont: titleFont.style.fontFamily,
+  contentFont: contentFont.style.fontFamily,
+  lightFont: lightFont.style.fontFamily,
+  btnFont: btnFont.style.fontFamily,
 };
 const icons = {
   calendar,

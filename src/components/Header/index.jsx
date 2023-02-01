@@ -15,13 +15,13 @@ import Image from "next/image";
 const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
   const router = useRouter();
 
-  const { pathname } = router.pathname;
+  const pathname = router.pathname;
   const [showBrandHeader, setShowBrandHeader] = useState(false);
   const { currentPageTitle, customBackHeaderLink, setCustomBackHeaderLink } =
     useGlobalState();
   const [hideBackNav, setHideBackNav] = useState(false);
   const { currentUser } = useAuthContext();
-
+  console.log(pathname);
   useEffect(() => {
     if (pathname === "/user-cred") {
       setShowBrandHeader(false);
@@ -56,7 +56,7 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
   let hasToken;
   useEffect(() => {
     hasToken = localStorage.getItem(AUTH_TOKEN);
-  },[]);
+  }, []);
   return (
     <HeaderCtr style={customStyle}>
       {showBrandHeader ? (
@@ -133,6 +133,9 @@ const HeaderCtr = styled.div`
     @media screen and (max-width: 768px) {
       padding: 0.5rem 1rem;
     }
+  }
+  @media screen and (min-width: 500px) {
+    max-width: 100%;
   }
 `;
 

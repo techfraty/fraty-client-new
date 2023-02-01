@@ -1,36 +1,31 @@
 import React from "react";
-import { useGlobalState } from "../../context/global.context";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useEffect } from "react";
 import assets from "../../assets";
-import { useQuery } from "@tanstack/react-query";
 import {
   fetchServices,
   patchServices,
   postServices,
 } from "../../util/services";
-import Gif from "../Gif/Gif";
+import Gif from "../../p2/pages/Gif/Gif";
 import { DRAFT_EVENTS, DRAFT_EVENTS_CURRENT } from "../../util/constants";
-import AppBtn from "../../components/common/Btn";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/auth.context";
-import Header from "../../components/Header/";
-import Loader from "../../components/Loader";
-import { isValidLink } from "../../util/utils";
-import Modal from "../../components/Modal/Modal";
-import Button from "../../components/Button/Button";
+import Header from "../Header";
+import Loader from "../Loader";
+import Button from "../Button/Button";
 import locationIcon from "../../assets/images/icons/location.svg";
 import linkIcon from "../../assets/images/icons/link-2.svg";
 import rupeeIcon from "../../assets/images/icons/dollar-circle.svg";
-import googlePayIcon from "../../assets/images/icons/image 1.svg";
-import PayIcon from "../../assets/images/icons/image 1-1.svg";
 import calendarIcon from "../../assets/images/icons/note-text.svg";
+import { useRouter } from "next/router";
+import { useGlobalState } from "@/context/global.context";
+import { NextPage } from "next";
 
-const CreateEvent = () => {
-  let { type, id } = useParams();
+const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
+  console.log({ id });
   const [editView, setEditView] = useState(false);
   const {
     setgifPreview,
@@ -67,23 +62,26 @@ const CreateEvent = () => {
   }, [type, id, selectedEvent, userDetails]);
 
   async function fetchEventDetails() {
+    if (!id) return;
     setFormData({});
     setSelectedEvent({});
     if (type !== "edit") return;
     setLoading(true);
+    console.log("id", { id });
     const data = await fetchServices.fetchEventDetailsFull({
       eventID: id,
     });
-    setSelectedEvent(data.event);
-    setFormData(data.event);
+    setSelectedEvent(data?.event);
+    setFormData(data?.event);
 
-    let tempData = [];
-    Object.entries(data.event).forEach(([name, value]) =>
+    let tempData: any = [];
+    if (!data?.event) return;
+    Object?.entries(data?.event).forEach(([name, value]) =>
       tempData.push({ [name]: value })
     );
     setUseFormValue(tempData);
     setLoading(false);
-    return data.event;
+    return data?.event;
   }
   const {
     register,
@@ -92,11 +90,13 @@ const CreateEvent = () => {
     getValues,
     formState: { errors },
   } = useForm({ defaultValues: async () => await fetchEventDetails() });
+  const router = useRouter();
+  let formDataStor: any = [];
+  useEffect(() => {
+    formDataStor = JSON.parse(window.localStorage.getItem(DRAFT_EVENTS));
+  }, []);
 
-  const navigate = useNavigate();
-  const formDataStor = JSON.parse(window.localStorage.getItem(DRAFT_EVENTS));
-
-  const saveDraftOnServer = async (newDraftEvent) => {
+  const saveDraftOnServer = async (newDraftEvent: any) => {
     newDraftEvent.createdAt = new Date().toISOString();
     newDraftEvent.publishStatus = "draft";
     newDraftEvent.creator = userDetails?._id;
@@ -106,7 +106,7 @@ const CreateEvent = () => {
     return await postServices.formSubmition(newDraftEvent);
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
     if (editView) {
       const { updateEvent } = patchServices;
@@ -117,12 +117,10 @@ const CreateEvent = () => {
       let res = await updateEvent(EventData);
       toast.success("Event updated");
       if (EventData?.publishStatus === "draft") {
-        navigate(`/event/add/publish/${res?.data?.data?._id}`, {
-          replace: true,
-        });
+        router.replace(`/event/add/publish/${res?.data?.data?._id}`);
         return;
       }
-      navigate(`/event/${res?.data?.data?._id}`, { replace: true });
+      router.replace(`/event/${res?.data?.data?._id}`);
       return;
     }
     try {
@@ -138,7 +136,7 @@ const CreateEvent = () => {
         showLocation: !EventData.showLocation,
       });
       // console.log(EventData);
-      navigate(`/event/add/publish/${res?.data?.eventId}`, { replace: true });
+      router.replace(`/event/add/publish/${res?.data?.eventId}`);
       console.log(res);
     } catch (error) {
       console.log(error);
@@ -157,11 +155,11 @@ const CreateEvent = () => {
   //   cacheTime: 0,
   // });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { id, value, checked } = e.target;
     // console.log(id, value);
     if (id === "waitList" || id === "showLocation") {
-      setFormData((prev) => ({
+      setFormData((prev: any) => ({
         ...prev,
         [id]: checked,
       }));
@@ -169,7 +167,7 @@ const CreateEvent = () => {
       return;
     }
     if (id === "costPerPerson") {
-      setFormData((prev) => ({
+      setFormData((prev: any) => ({
         ...prev,
         [id]: parseInt(value),
       }));
@@ -177,13 +175,13 @@ const CreateEvent = () => {
       return;
     }
     if (e.target.id === "imageurl") {
-      setFormData((prev) => ({
+      setFormData((prev: any) => ({
         ...prev,
         imageurl: gifPreview?.images?.downsized.url,
       }));
       setUseFormValue({ imageurl: gifPreview?.images?.downsized.url });
     } else {
-      setFormData((prev) => ({
+      setFormData((prev: any) => ({
         ...prev,
         [e.target.id]: e.target.value,
       }));
@@ -199,7 +197,7 @@ const CreateEvent = () => {
     }
   }, []);
 
-  function handleChangePaymentInfo(e) {
+  function handleChangePaymentInfo(e: any) {
     // const { id, value } = e.target;
     // setFormData((prev) => ({
     //   ...prev,

@@ -1,6 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { useEffect, useContext, useCallback } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import EventCard from "../../components/EventCard";
@@ -9,24 +8,24 @@ import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { fetchServices } from "../../util/services";
 import { BsPlusLg } from "react-icons/bs";
-import { useConnect, useAccount } from "wagmi";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import AppBtn from "../../components/common/Btn";
 import { DRAFT_EVENTS, FRATY_EVENTS } from "../../util/constants";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import { useAuthContext } from "../../context/auth.context";
+import { useRouter } from "next/router";
 
-const Home = () => {
+const HomePage = () => {
   const [eventsCollection, setEventsCollection] = useState([]);
   const [allEvents, setAllEvents] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
-  const [attendedEvents, setAttendedEvents] = useState([]);
+  const [attendedEvents, setAttendedEvents] = useState<any>([]);
   const [myEvents, setMyEvents] = useState([]);
   const [fetchingEvents, setFetchingEvents] = useState(false);
   const [fetchingMyEvents, setFetchingMyEvents] = useState(false);
   const [rsvpEvents, setRSVPEvents] = useState([]);
-  const { search } = useLocation();
+  // const { search } = useLocation();
   const [userConnected, setUserConnected] = useState(false);
   const [eventsLoading, setEventsLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("upcoming");
@@ -54,25 +53,27 @@ const Home = () => {
   //   );
   // };
 
-  useEffect(() => {
-    if (search) {
-      const queryObj = new URLSearchParams(search);
-      const referral = queryObj.get("referral");
-      if (referral) {
-        window.localStorage.setItem("referral", referral);
-      } else {
-        window.localStorage.removeItem("referral");
-      }
-    }
-  }, [search]);
+  // useEffect(() => {
+  //   if (search) {
+  //     const queryObj = new URLSearchParams(search);
+  //     const referral = queryObj.get("referral");
+  //     if (referral) {
+  //       window.localStorage.setItem("referral", referral);
+  //     } else {
+  //       window.localStorage.removeItem("referral");
+  //     }
+  //   }
+  // }, [search]);
 
-  const navigate = useNavigate();
-  const onEventSelectHost = (event) => {
-    navigate(`/event/add/edit/${event?._id || event?.id}`, { state: event });
+  const router = useRouter();
+  const onEventSelectHost = (event: any) => {
+    //state event is shared with the next page
+    router.push(`/event/add/edit/${event?._id || event?.id}`);
   };
 
-  const onEventSelect = (event) => {
-    navigate(`/event/${event?.id || event?._id}`, { state: event });
+  const onEventSelect = (event: any) => {
+    //state event is shared with the next page
+    router.push(`/event/${event?.id || event?._id}`);
   };
 
   const refetchAllEvents = useCallback(async () => {
@@ -84,7 +85,7 @@ const Home = () => {
       let tempEventsCollectionIds = new Set(
         tempEventsCollection.map((e) => e.id)
       );
-      let tempEventsCollectionNoDupes = [];
+      let tempEventsCollectionNoDupes: any = [];
       tempEventsCollectionIds.forEach((id) => {
         tempEventsCollectionNoDupes.push(
           tempEventsCollection.find((e) => e.id === id)
@@ -99,7 +100,7 @@ const Home = () => {
     setFetchingEvents(false);
   }, [currentUser?.phoneNumber, prevEventsFromLS]);
 
-  const filterEvents = async (upcoming, attended) => {
+  const filterEvents = async (upcoming: any, attended: any) => {
     setEventsLoading(true);
 
     await fetchServices
@@ -110,7 +111,7 @@ const Home = () => {
         let tempEventsCollectionIds = new Set(
           tempEventsCollection.map((e) => e.id)
         );
-        let tempEventsCollectionNoDupes = [];
+        let tempEventsCollectionNoDupes: any = [];
         tempEventsCollectionIds.forEach((id) => {
           tempEventsCollectionNoDupes.push(
             tempEventsCollection.find((e) => e.id === id)
@@ -126,20 +127,20 @@ const Home = () => {
       });
   };
 
-  function hasHappened(event) {
+  function hasHappened(event: any) {
     return new Date(event.eventStartDate) < new Date();
   }
 
-  const upcomingAndAttendedEventsFilter = (upcoming, attended) => {
+  const upcomingAndAttendedEventsFilter = (upcoming: any, attended: any) => {
     setEventsLoading(true);
     fetchServices
       .fetchAllMyRSVPedEvents(currentUser?.phoneNumber)
       .then((data) => {
-        const tempEventsCollectionNoDupes = [...data?.data];
+        const tempEventsCollectionNoDupes: any = [...data?.data];
         if (attended) {
           setAttendedEvents(
             tempEventsCollectionNoDupes.filter(
-              (event) =>
+              (event: any) =>
                 new Date(event.eventStartDate) < new Date() &&
                 new Date(event.eventStartDate).getDate() < new Date().getDate()
             )
@@ -148,7 +149,7 @@ const Home = () => {
         if (upcoming) {
           setUpcomingEvents(
             tempEventsCollectionNoDupes.filter(
-              (event) => new Date(event.eventStartDate) >= new Date()
+              (event: any) => new Date(event.eventStartDate) >= new Date()
             )
           );
         }
@@ -252,7 +253,7 @@ const Home = () => {
                   if (!currentUser) {
                     setShowAuthModal(true);
                   } else {
-                    navigate("/createParty/add/1");
+                    router.push("/createParty/add/1");
                   }
                 }}
               >
@@ -262,7 +263,7 @@ const Home = () => {
                 </div>
               </div>
 
-              {draftEvents?.map((eventItem, idx) => (
+              {draftEvents?.map((eventItem: any, idx: any) => (
                 <EventCard
                   eventItem={eventItem}
                   key={idx}
@@ -277,7 +278,7 @@ const Home = () => {
           <div className="_eventSet">
             {/* <p className="subtitle">Events happening</p> */}
             <div className="buttons_row">
-            <div className="">
+              <div className="">
                 <AppBtn
                   square={false}
                   onClick={() => setSelectedFilter("upcoming")}
@@ -360,7 +361,7 @@ const Home = () => {
 
             <div className="_allEvents">
               {selectedFilter === "all" &&
-                allEvents.map((eventItem, idx) => (
+                allEvents.map((eventItem: any, idx: any) => (
                   <EventCard
                     eventItem={eventItem}
                     key={eventItem.id + idx}
@@ -369,7 +370,7 @@ const Home = () => {
                   />
                 ))}
               {selectedFilter === "hosting" &&
-                myEvents.map((eventItem, idx) => (
+                myEvents.map((eventItem: any, idx: any) => (
                   <EventCard
                     eventItem={eventItem}
                     key={`${eventItem.id}-${idx}`}
@@ -378,7 +379,7 @@ const Home = () => {
                   />
                 ))}
               {selectedFilter === "upcoming" &&
-                upcomingEvents.map((eventItem, idx) => (
+                upcomingEvents.map((eventItem: any, idx: any) => (
                   <EventCard
                     eventItem={eventItem}
                     key={`${eventItem.id}-${idx}`}
@@ -387,7 +388,7 @@ const Home = () => {
                   />
                 ))}
               {selectedFilter === "attended" &&
-                attendedEvents.map((eventItem, idx) => (
+                attendedEvents.map((eventItem: any, idx: any) => (
                   <EventCard
                     eventItem={eventItem}
                     key={`${eventItem.id}-${idx}`}
@@ -415,7 +416,7 @@ const Home = () => {
   );
 };
 
-function getBgColor(idx) {
+function getBgColor(idx: any) {
   return parseInt(idx) % 5 === 0
     ? "var(--color-orange)"
     : parseInt(idx) % 5 >= 4
@@ -501,4 +502,4 @@ const HomeCtr = styled.div`
     }
   }
 `;
-export default Home;
+export default HomePage;

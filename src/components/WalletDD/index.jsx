@@ -4,6 +4,7 @@ import styled from "styled-components";
 import assets from "../../assets";
 import { useAuthContext } from "../../context/auth.context";
 import { mixins } from "../../styles/global.theme";
+import { useRouter } from "next/router";
 
 //to generate ellipses in middle of address text
 function trimAddress(str) {
@@ -25,11 +26,10 @@ const WalletDD = () => {
   //   setCopyStatus(true);
   //   setTimeout(() => setCopyStatus(false), 1000);
   // };
-
-  const navigate = useNavigate();
+  const router = useRouter();
 
   function handleClickProfile() {
-    navigate("/profile");
+    router.push("/profile");
   }
 
   return currentUser ? (

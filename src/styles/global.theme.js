@@ -43,24 +43,24 @@ export const mixins = {
 export const GlobalStyles = styled.createGlobalStyle`
   /*Font Imports*/
   @font-face {
-    font-family: contentFont;
+    src: url(/fonts/roobert-regular.ttf);
+    font-family: contentfont;
     font-weight: 500;
-    src: url(${assets.fonts.contentFont});
   }
   @font-face {
-    font-family: lightFont;
+    src: url(/fonts/Sora-Regular.ttf);
+    font-family: lightfont;
     font-weight: 400;
-    src: url(${assets.fonts.lightFont});
   }
   @font-face {
-    font-family: titleFont;
     font-weight: 700;
-    src: url(${assets.fonts.titleFont});
+    src: url(/fonts/outer-sans-bold.otf);
+    font-family: titlefont;
   }
   @font-face {
-    font-family: buttonFont;
+    src: url(/fonts/outer-sans-medium.otf);
+    font-family: btnfont;
     font-weight: 700;
-    src: url(${assets.fonts.btnFont});
   }
   :root {
     //dimension
@@ -82,10 +82,10 @@ export const GlobalStyles = styled.createGlobalStyle`
     --color-dull: #1f1f1f;
 
     //fonts
-    --ff-content: contentFont, sans-serif;
+    --ff-content: contentfont, sans-serif;
     --ff-title: titleFont, sans-serif;
-    --ff-light: lightFont, sans-serif;
-    --ff-buttonFont: buttonFont, sans-serif;
+    --ff-light: lightfont, sans-serif;
+    --ff-buttonFont: lightfont, sans-serif;
     --fs-s: clamp(0.8rem, 1vw, 0.9rem);
     --fs-r2: clamp(1rem, 2vw, 1.25rem);
     --fs-r: clamp(1.25rem, 2vw, 1.5rem);
