@@ -1,12 +1,15 @@
 import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import insta from "../../assets/icons/insta.svg";
 import mail from "../../assets/icons/mail.svg";
 import twitter from "../../assets/icons/twitter.svg";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 export default function Footer() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const router = useRouter();
   return (
     <div>
       <LandingPageCtr>
@@ -14,7 +17,7 @@ export default function Footer() {
           <span className="_footer_l">
             <p
               onClick={() => {
-                navigate("/privacy");
+                router.push("/privacy");
               }}
             >
               Privacy Policy
@@ -22,27 +25,27 @@ export default function Footer() {
           </span>
           <span className="_footer_m">&#169; 2023 Fraty Ventures</span>
           <span className="_footer_r">
-            {/* <a href="http://linkedin.com/" target="_blank"><img src = {linkedin}></img></a> */}
+            {/* <a href="http://linkedin.com/" target="_blank"><Image src = {linkedin}></Image></a> */}
             <a
               href="https://twitter.com/fratyofficial?s=21&t=NEvbdnYKfsPa2E8jbVZ30Q"
               target="_blank"
               rel="noreferrer"
             >
-              <img src={twitter} alt="twitter"></img>
+              <Image src={twitter} height={25} width={25} alt="twitter"></Image>
             </a>
             <a
               href="https://instagram.com/fraty.in?igshid=YmMyMTA2M2Y="
               target="_blank"
               rel="noreferrer"
             >
-              <img src={insta} alt="insta"></img>
+              <Image src={insta} height={25} width={25} alt="insta"></Image>
             </a>
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=fratyofficial@gmail.com"
               target="_blank"
               rel="noreferrer"
             >
-              <img src={mail} alt="mail"></img>
+              <Image src={mail} height={25} width={25} alt="mail"></Image>
             </a>
           </span>
         </div>

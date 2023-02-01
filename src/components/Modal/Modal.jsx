@@ -47,7 +47,7 @@ const Modal = () => {
         </div>
         <div className="btnBox">
           <div className="boxbtn" onClick={copyEventShareLink}>
-            {!copyStatus ? <p>Share link</p> : <p>link Copied</p>}
+            {!copyStatus ? <p>Share link</p> : <p>Link Copied</p>}
             <img src={assets.icons.link} alt="" />
           </div>
         </div>
@@ -135,6 +135,9 @@ const ModalContiner = styled.div`
     color: white;
     font-size: 16px !important;
     font-family: var(--ff-light);
+    p {
+      margin: 0 !important;
+    }
   }
   .btnp {
     cursor: pointer;

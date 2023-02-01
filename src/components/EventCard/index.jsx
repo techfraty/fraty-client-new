@@ -23,6 +23,7 @@ const TimeCard = styled.div`
 `;
 
 const EventCard = ({ eventItem, bg, onClick }) => {
+  console.log(eventItem, dayjs(eventItem.eventStartDate).format("ddd DD / MM"));
   return (
     <EventCardCtr style={bg ? { background: bg } : {}} onClick={onClick}>
       <div className="_cardOverlay">
@@ -35,7 +36,7 @@ const EventCard = ({ eventItem, bg, onClick }) => {
         </div> */}
       </div>
       <TimeCard>
-        <p>{dayjs(eventItem.date).format("ddd DD / MM")}</p>
+        <p>{dayjs(eventItem.eventStartDate).format("ddd DD / MM")}</p>
       </TimeCard>
       <div className="_eventImg">
         <img src={getImageURL(eventItem)} alt="" />

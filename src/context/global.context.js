@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useAccount, useQuery } from "wagmi";
+// import { useLocation } from "react-router-dom";
+// import { useAccount, useQuery } from "wagmi";
 import { FRATY_EVENTS } from "../util/constants";
 import { fetchServices } from "../util/services";
 import { useAuthContext } from "./auth.context";
+import { useRouter } from "next/router";
 
 const GlobalContext = createContext({});
 
@@ -32,21 +33,23 @@ export default function GlobalContextProvider({ children }) {
   const [prevEventsFromLS, setPrevEventsFromLS] = useState([]);
   const [customBackHeaderLink, setCustomBackHeaderLink] = useState(null);
 
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
+  const router = useRouter();
+  const { pathname } = router;
   // const { address } = useAccount();
 
   const { currentUser } = useAuthContext();
 
-  useEffect(() => {
-    async function customFetchAllEvents() {
-      let data = await fetchServices.fetchEventsWithIds(prevEvents);
-      setPrevEventsFromLS(data?.data?.events);
-    }
-    let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
-    if (prevEvents?.length) {
-      customFetchAllEvents();
-    }
-  }, []);
+  // useEffect(() => {
+  //   async function customFetchAllEvents() {
+  //     let data = await fetchServices.fetchEventsWithIds(prevEvents);
+  //     setPrevEventsFromLS(data?.data?.events);
+  //   }
+  //   let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
+  //   if (prevEvents?.length) {
+  //     customFetchAllEvents();
+  //   }
+  // }, []);
 
   useEffect(() => {
     async function getDraftEvents() {

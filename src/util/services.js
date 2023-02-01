@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTH_TOKEN } from "./constants";
 
-export const BE_URL = process.env.REACT_APP_API_URL;
+export const BE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function authHeader(eventID) {
   const user = JSON.parse(localStorage.getItem(eventID));
@@ -96,9 +96,12 @@ const fetchEventDetails = async ({ eventID, address }) => {
   return allEvents;
 };
 const fetchEventDetailsFull = async ({ eventID, userId = null }) => {
+  if (typeof window === "undefined") {
+    return;
+  }
   const res = await axios.get(BE_URL + `/fraty/fetch/${eventID}`, {
     params: {
-      token: localStorage.getItem(AUTH_TOKEN),
+      token: localStorage ? localStorage.getItem(AUTH_TOKEN) : "",
     },
   });
   const allEvents = await res.data.data;
@@ -194,7 +197,7 @@ export const fetchServices = {
 };
 //post services
 const uploadPhoto = async ({ formData, eventID }) => {
-  await axios.post(BE_URL + "/fraty/image", formData, {
+  return await axios.post(BE_URL + "/fraty/image", formData, {
     headers: customAuthHeader(),
   });
 };
@@ -308,15 +311,13 @@ const getUserDetails = async (token) => {
   return userData;
 };
 
-const updateRSVPStatus = async (eventID) => {
-  console.log("event ID", eventID);
-  const res = await axios.post(
-    BE_URL + `/fraty/rsvp`,
-    { rsvp: "going" },
-    {
-      headers: authHeader(eventID),
-    }
-  );
+const updateRSVPStatus = async (eventID, wallet, status) => {
+  console.log("event ID", eventID, wallet, status);
+  const res = await axios.post(BE_URL + `/fraty/rsvp-status`, {
+    wallet,
+    event: eventID,
+    status,
+  });
   const userData = await res.data.message;
   return userData;
 };
