@@ -1,15 +1,14 @@
 import React from "react";
-import { useGlobalState } from "../../context/global.context";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import AppBtn from "../../components/common/Btn";
-import { useQuery } from "@tanstack/react-query";
-import { fetchServices } from "../../util/services";
-import { postServices } from "../../util/services";
-import Loader from "../../components/Loader";
-import Button from "../../components/Button/Button";
-import { useAuthContext } from "../../context/auth.context";
+
+import { fetchServices } from "../../../util/services";
+import { postServices } from "../../../util/services";
+import Loader from "../../../components/Loader";
+import Button from "../../../components/Button/Button";
+import { useAuthContext } from "../../../context/auth.context";
+import { useGlobalState } from "@/context/global.context";
+import AppBtn from "./../../../components/common/Btn";
 
 const Gif = ({ handleClose }) => {
   const [trending, setTrending] = useState({});

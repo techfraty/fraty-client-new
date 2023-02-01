@@ -40,16 +40,16 @@ export default function GlobalContextProvider({ children }) {
 
   const { currentUser } = useAuthContext();
 
-  useEffect(() => {
-    async function customFetchAllEvents() {
-      let data = await fetchServices.fetchEventsWithIds(prevEvents);
-      setPrevEventsFromLS(data?.data?.events);
-    }
-    let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
-    if (prevEvents?.length) {
-      customFetchAllEvents();
-    }
-  }, []);
+  // useEffect(() => {
+  //   async function customFetchAllEvents() {
+  //     let data = await fetchServices.fetchEventsWithIds(prevEvents);
+  //     setPrevEventsFromLS(data?.data?.events);
+  //   }
+  //   let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
+  //   if (prevEvents?.length) {
+  //     customFetchAllEvents();
+  //   }
+  // }, []);
 
   useEffect(() => {
     async function getDraftEvents() {

@@ -96,9 +96,12 @@ const fetchEventDetails = async ({ eventID, address }) => {
   return allEvents;
 };
 const fetchEventDetailsFull = async ({ eventID, userId = null }) => {
+  if (typeof window === "undefined") {
+    return;
+  }
   const res = await axios.get(BE_URL + `/fraty/fetch/${eventID}`, {
     params: {
-      token: localStorage.getItem(AUTH_TOKEN),
+      token: localStorage ? localStorage.getItem(AUTH_TOKEN) : "",
     },
   });
   const allEvents = await res.data.data;
