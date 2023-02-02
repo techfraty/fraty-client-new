@@ -22,6 +22,7 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
   const formRef = useRef(null);
 
   function generateRecaptcha() {
+    if (typeof window === "undefined") return;
     window.recaptchaVerifier = new RecaptchaVerifier(
       "sign-in-button",
       {
@@ -46,6 +47,7 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
     if (phone.length !== 10) return alert("Please enter a valid phone number");
 
     setSubmitBtnText("Sending OTP...");
+    if (typeof window === "undefined") return;
     generateRecaptcha();
     // if (!isSignInAllowed) return console.log("Not Allowed");
     const appVerifier = window.recaptchaVerifier;
@@ -61,11 +63,13 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
+
         window.confirmationResult = confirmationResult;
         setIsOTPSent(true);
         setSubmitBtnText("Verify OTP");
       })
       .catch((error) => {
+        console.log(error);
         // Error; SMS not sent
         alert("Error: SMS Not sent");
         setSubmitBtnText("Send OTP");
