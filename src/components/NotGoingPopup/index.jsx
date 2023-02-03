@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import assets from "../../assets";
 import { mixins } from "../../styles/global.theme";
@@ -7,7 +6,6 @@ import Button from "../Button/Button";
 import AppBtn from "../common/Btn";
 
 const NotGoingPopup = ({ closeModal, text, proceed }) => {
-  const navigate = useNavigate();
   return (
     <NotGoinPopupCtr>
       <div className="_popupMessage">

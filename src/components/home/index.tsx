@@ -253,7 +253,7 @@ const HomePage = () => {
                   if (!currentUser) {
                     setShowAuthModal(true);
                   } else {
-                    router.push("/createParty/add/1");
+                    router.push("/createparty/add/");
                   }
                 }}
               >

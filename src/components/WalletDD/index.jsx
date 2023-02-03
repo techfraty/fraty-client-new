@@ -5,6 +5,7 @@ import assets from "../../assets";
 import { useAuthContext } from "../../context/auth.context";
 import { mixins } from "../../styles/global.theme";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 //to generate ellipses in middle of address text
 function trimAddress(str) {
@@ -59,7 +60,7 @@ const WalletDD = () => {
         )}
       </WalletDDCtr> */}
       <ProfileButton title="My Profile" onClick={handleClickProfile}>
-        <img src={assets.icons.user} alt="profile" />
+        <Image src={assets.icons.user} alt="profile" />
       </ProfileButton>
     </WalletDDContainer>
   ) : null;

@@ -41,7 +41,7 @@ const Publish = ({ id, type }: any) => {
     setCustomBackHeaderLink,
   } = useGlobalState();
   const { userDetails, currentUser } = useAuthContext();
-  const [formDataStor, setFormDataStor] = useState<any>({});
+  const [formDataStor, setFormDataStor] = useState<any>();
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,8 @@ const Publish = ({ id, type }: any) => {
 
   const publish = async () => {
     setLoading(true);
-    if (!formDataStor) return;
+    console.log({ formDataStor });
+    if (!formDataStor?.creator) return;
     if (!currentUser) {
       toast.error("Please login to publish event");
     }
@@ -80,8 +81,8 @@ const Publish = ({ id, type }: any) => {
       return;
     }
 
-    formDataStor?.creator = currentUser?.id?._id;
-    formDataStor?.publishStatus = "published";
+    formDataStor.creator = currentUser?.id?._id;
+    formDataStor.publishStatus = "published";
     await patchServices
       .updateEvent({ publishStatus: "published", _id: id })
       .then((response) => {
@@ -103,7 +104,7 @@ const Publish = ({ id, type }: any) => {
     setLoading(false);
   };
   const updateEvent = () => {
-    router.push(`/createParty/edit/${id}`);
+    router.push(`/createparty/edit/${id}`);
   };
   // if(editView){
 
@@ -170,13 +171,13 @@ const Publish = ({ id, type }: any) => {
           <div className="_eventDetails">
             <div className="_eventImg">
               {editView ? (
-                <img src={selectedEvent?.image} alt="" />
+                <Image src={selectedEvent?.image} alt="" />
               ) : formDataStor?.image ? (
-                <img src={formDataStor?.image} alt="" />
-              ) : formDataStor.imageUrl ? (
-                <img src={formDataStor?.imageUrl} alt="" />
+                <Image src={formDataStor?.image} alt="" />
+              ) : formDataStor?.imageUrl ? (
+                <Image src={formDataStor?.imageUrl} alt="" />
               ) : (
-                <img
+                <Image
                   src="https://media1.giphy.com/media/3o7TKw4EWO6QR7YIKY/giphy.gif?cid=d469b3393ul8gb60blkcp2gzq6tis0bns27om87b75lvjm4t&rid=giphy.gif&ct=g"
                   alt=""
                 />
@@ -211,7 +212,7 @@ const Publish = ({ id, type }: any) => {
             </div>
             <div className="twob">
               <p className="_time">
-                <img src={calendarIcon} alt="" />
+                <Image src={calendarIcon} alt="" />
                 <span>
                   {editView
                     ? dayjs(selectedEvent?.eventStartDate).format("MMM DD")
@@ -219,7 +220,7 @@ const Publish = ({ id, type }: any) => {
                 </span>
               </p>
               <p className="_time">
-                <img src={clockIcon} alt="" />
+                <Image src={clockIcon} alt="" />
                 <span>
                   {editView
                     ? selectedEvent?.eventStartTime
@@ -229,7 +230,7 @@ const Publish = ({ id, type }: any) => {
             </div>
             {formDataStor?.costPerPerson ? (
               <p className="_time">
-                <img src={ticketIcon} alt="" />
+                <Image src={ticketIcon} alt="" />
                 <span>
                   ₹
                   {editView
@@ -248,7 +249,7 @@ const Publish = ({ id, type }: any) => {
                 onClick={() => {
                   window.open(selectedEvent?.locationURL, "_blank");
                 }}
-                icon={<img src={assets.icons.locationWhite} alt="" />}
+                icon={<Image src={assets.icons.locationWhite} alt="" />}
               >
                 {editView ? selectedEvent?.location : formDataStor?.location}
               </Button>
@@ -264,7 +265,7 @@ const Publish = ({ id, type }: any) => {
                   }}
                 >
                   <p>{formDataStor?.url}</p>
-                  <img src={assets.icons.link} alt="link" />
+                  <Image src={assets.icons.link} alt="link" />
                 </div>
               ) : selectedEvent?.url ? (
                 <div

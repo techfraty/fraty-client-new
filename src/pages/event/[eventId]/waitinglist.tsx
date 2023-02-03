@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
-import { fetchServices, postServices } from "../../util/services";
-import { useParams } from "react-router-dom";
+import { fetchServices, postServices } from "../../../util/services";
 import { toast } from "react-toastify";
-import Loader from "../../components/Loader";
-import { useGlobalState } from "../../context/global.context";
-import Button from "../../components/Button/Button";
-import { useAuthContext } from "../../context/auth.context";
+import Loader from "../../../components/Loader";
+import { useGlobalState } from "../../../context/global.context";
+import Button from "../../../components/Button/Button";
+import { useAuthContext } from "../../../context/auth.context";
+import { useRouter } from "next/router";
 
 const Waiting = () => {
-  const { id: eventIDParam } = useParams();
+  const router = useRouter();
+  const eventIDParam = router.query.eventId;
   const { currentUser } = useAuthContext();
   const [waitinglist, setWaitinglist] = React.useState([]);
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
@@ -21,7 +22,7 @@ const Waiting = () => {
     onSuccess: (data) => {
       console.log(data, currentUser);
       setWaitinglist(
-        data.data.filter((prev) => prev?._id !== currentUser?.id?._id)
+        data.data.filter((prev: any) => prev?._id !== currentUser?.id?._id)
       );
     },
     refetchInterval: 10000,
@@ -41,7 +42,7 @@ const Waiting = () => {
       {fwaithinglist ? (
         <Loader />
       ) : (
-        waitinglist.map((data, idx) => (
+        waitinglist.map((data, idx: number) => (
           <WaitingCard
             bg={
               parseInt(idx) % 5 === 0
@@ -63,17 +64,18 @@ const Waiting = () => {
   );
 };
 
-const WaitingCard = ({ bg, data, setWaitinglist }) => {
-  const { id: eventIDParam } = useParams();
+const WaitingCard = ({ bg, data, setWaitinglist }: any) => {
+  const router = useRouter();
+  const eventIDParam = router.query.eventId;
   const letItIn = async () => {
     await postServices
       .letIn(eventIDParam, data.wallet)
       .then((response) => {
         toast.success("success");
         // navigate("/")
-        setWaitinglist((prev) =>
+        setWaitinglist((prev: any) =>
           prev.filter(
-            (data) => data._id !== response?.data?.data?.member[0]?._id
+            (data: any) => data._id !== response?.data?.data?.member[0]?._id
           )
         );
         console.log(response);

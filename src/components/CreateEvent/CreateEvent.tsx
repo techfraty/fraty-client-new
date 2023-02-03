@@ -9,7 +9,7 @@ import {
   patchServices,
   postServices,
 } from "../../util/services";
-import Gif from "../../p2/pages/Gif/Gif";
+import Gif from "../Gif/Gif";
 import { DRAFT_EVENTS, DRAFT_EVENTS_CURRENT } from "../../util/constants";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../context/auth.context";

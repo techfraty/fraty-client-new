@@ -79,6 +79,7 @@ const fetchFratyUser = async (wallet, eventID) => {
   return fratyusers;
 };
 const fetchEventDetails = async ({ eventID, address }) => {
+  if (!eventID) return;
   console.log(eventID, address);
   if (address) {
     const res = await axios.get(BE_URL + `/fraty/event/${eventID}`, {
@@ -99,6 +100,8 @@ const fetchEventDetailsFull = async ({ eventID, userId = null }) => {
   if (typeof window === "undefined") {
     return;
   }
+  if (!eventID) return;
+  console.log({ eventID });
   const res = await axios.get(BE_URL + `/fraty/fetch/${eventID}`, {
     params: {
       token: localStorage ? localStorage.getItem(AUTH_TOKEN) : "",

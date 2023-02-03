@@ -15,7 +15,7 @@ import NotGoingPopup from "../NotGoingPopup";
 import PaymentPopup from "../PaymentPopup/PaymentPopup";
 import AuthModal from "../AuthModal/AuthModal";
 import { useAuthContext } from "../../context/auth.context";
-import Waiting from "../../p2/pages/Waiting/Waiting";
+import Waiting from "../../pages/event/[eventId]/waitinglist";
 import calendarIcon from "../../assets/icons/calendar.svg";
 import clockIcon from "../../assets/icons/clock.svg";
 import locationIcon from "../../assets/icons/location.svg";
@@ -29,8 +29,10 @@ import "yet-another-react-lightbox/styles.css";
 import { Helmet } from "react-helmet";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
-const EventPage = () => {
+const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
+  console.log({ eventIDParam });
   const {
     selectedEvent,
     setSelectedEvent,
@@ -42,10 +44,10 @@ const EventPage = () => {
     paymentConfompopup,
     setPatmetConform,
     setCustomBackHeaderLink,
-  } = useGlobalState();
-  const { eventID: eventIDParam, rsvpStatus } = useParams();
+  }: any = useGlobalState();
   const [copyStatus, setCopyStatus] = useState(false);
-  const { state: event } = useLocation();
+  // const { eventID: eventIDParam, rsvpStatus } = useParams();
+  // const { state: event } = useLocation();
   const alreadyRSVPed = useRef(false);
 
   const [userIntereseted, setUserInterested] = useState(false);
@@ -326,7 +328,7 @@ const EventPage = () => {
   }
 
   function handleClickEditEvent() {
-    router.push(`/createParty/edit/${selectedEvent?._id}`);
+    router.push(`/createparty/edit/${selectedEvent?._id}`);
   }
 
   function handleClickRSVPNow() {
@@ -448,7 +450,7 @@ const EventPage = () => {
               <AppBtn
                 square={true}
                 onClick={() => {
-                  router.push(`/waitinglist/${selectedEvent?._id}`);
+                  router.push(`/event/${selectedEvent?._id}/waitinglist`);
                 }}
                 btnBG=" #6597B3"
               >
@@ -458,6 +460,7 @@ const EventPage = () => {
             <p className="_organizer">Hosted By {selectedEvent?.organizer}</p>
             {(isEventCreator || (hasRsvpd && !inWaitingRoom)) && (
               <EventHeader
+                eventID={selectedEvent?._id}
                 hasRsvpd={hasRsvpd}
                 isEventCreator={isEventCreator}
                 event={selectedEvent}
@@ -471,19 +474,19 @@ const EventPage = () => {
             </div>
             <div className="inlinbox">
               <p className="_time">
-                <img src={calendarIcon} alt="" />
+                <Image src={calendarIcon} alt="" />
                 <span>
                   {dayjs(selectedEvent?.eventStartDate).format("MMM DD")}
                 </span>
               </p>
               <p className="_time">
-                <img src={clockIcon} alt="" />
+                <Image src={clockIcon} alt="" />
                 <span>{selectedEvent?.eventStartTime}</span>
               </p>
             </div>
             {selectedEvent?.costPerPerson && (
               <p className="_ticket">
-                <img src={ticketIcon} alt="" />
+                <Image src={ticketIcon} alt="" />
                 <span>
                   {formToCurrency(selectedEvent?.costPerPerson)} per person
                 </span>
@@ -505,7 +508,7 @@ const EventPage = () => {
                 width={"100%"}
               >
                 <span>{selectedEvent?.location}</span>
-                <img src={locationIcon} alt="" />
+                <Image src={locationIcon} alt="" />
               </AppBtn>
             )}
 
@@ -522,7 +525,7 @@ const EventPage = () => {
                   <span>
                     {copyStatus ? "Event link copied!" : "Share this event"}
                   </span>
-                  <img src={shareIcon} alt="" />
+                  <Image src={shareIcon} alt="" />
                 </AppBtn>
               </div>
             )}
@@ -534,7 +537,7 @@ const EventPage = () => {
                 >
                   <div className="_reactionImg _reaction_going">
                     {/* <img src={goingImage} alt="going-to-event" /> */}
-                    <img
+                    <Image
                       src={assets.reactions.going}
                       alt="going-to-event"
                       className="overlay_image_reaction"
@@ -548,7 +551,7 @@ const EventPage = () => {
                 >
                   <div className="_reactionImg _reaction_going maybe">
                     {/* <img src={maybeImage} alt="going-to-event" /> */}
-                    <img
+                    <Image
                       src={assets.reactions.maybe}
                       alt="mayber-going-to-event"
                       className="overlay_image_reaction"
@@ -562,7 +565,7 @@ const EventPage = () => {
                 >
                   <div className="_reactionImg _reaction_going">
                     {/* <img src={notGoingImage} alt="going-to-event" /> */}
-                    <img
+                    <Image
                       src={assets.reactions.nope}
                       alt="not-going-to-event"
                       className="overlay_image_reaction"
@@ -630,7 +633,7 @@ const EventPage = () => {
                     btnBG={"#6597B3"}
                     width={"100%"}
                     onClick={() => {
-                      router.push("/members");
+                      router.push(`/event/${eventIDParam}/members`);
                       // {
                       //   state: {
                       //     Eventid: selectedEvent?._id,
@@ -645,7 +648,7 @@ const EventPage = () => {
                   >
                     <span>Members list</span>
                     {members?.length === 0 && (
-                      <img src={assets.icons.users} alt="" />
+                      <Image src={assets.icons.users} alt="" />
                     )}
                     {members?.length > 0 && (
                       <span className="member_count">{members?.length}</span>
@@ -677,7 +680,7 @@ const EventPage = () => {
                 className="btnStyle"
                 onClick={handleClickEditEvent}
               >
-                Edit Event <img src={assets.icons.edit} alt="edit" />
+                Edit Event <Image src={assets.icons.edit} alt="edit" />
               </AppBtn>
             </div>
           )}

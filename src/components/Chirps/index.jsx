@@ -1,12 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import assets from "../../assets";
-import Button from "../../components/Button/Button";
-import ChirpCard from "../../components/ChirpCard";
-import Loader from "../../components/Loader";
+import Button from "../Button/Button";
+import ChirpCard from "../ChirpCard";
+import Loader from "../Loader";
 import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { fetchServices, postServices } from "../../util/services";
@@ -14,16 +13,18 @@ import Compressor from "compressorjs";
 import sendIcon from "../../assets/icons/send.svg";
 import loadingIcon from "../../assets/icons/loading.svg";
 import { useAuthContext } from "../../context/auth.context";
+import Image from "next/image";
+import { useRouter } from "next/router";
 const ImgUpload = ({ src, onChange }) => {
   return (
     <ImgUploadCtr>
       <label className="_custom-file-upload">
         <div className="_img-wrap _img-upload">
           {src && src !== "null" && src !== "undefined" ? (
-            <img src={src} alt="" />
+            <Image src={src} alt="" />
           ) : (
             <div className="img_placeholder">
-              <img src={assets.icons.gallery} alt="" />
+              <Image src={assets.icons.gallery} alt="" />
             </div>
           )}
         </div>
@@ -76,14 +77,13 @@ const ImgUploadCtr = styled.div`
   }
 `;
 
-const Chirps = ({ height }) => {
+const Chirps = ({ height, eventID }) => {
   const { userDetails } = useAuthContext();
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
   const chirpText = useRef();
   const [photo, setPhoto] = useState(null);
   const [compressedPhoto, setCompressedPhoto] = useState(null);
   const [previewURL, setPreviewURL] = useState(null);
-  const { eventID } = useParams();
   const [chirps, setChirps] = useState([]);
   const { isLoading: loadingChirps, refetch: refetch } = useQuery({
     queryKey: ["fetchAllChurpsForChirpPage"],
@@ -176,7 +176,7 @@ const Chirps = ({ height }) => {
           <ImgUpload onChange={photoUpload} src={previewURL} />
           <Button bgColor="transparent" className="_submitBtn" type="submit">
             {uploadingChirp ? (
-              <img
+              <Image
                 src={loadingIcon}
                 height={25}
                 width={25}
@@ -184,7 +184,7 @@ const Chirps = ({ height }) => {
                 className="waitingIcon"
               />
             ) : (
-              <img src={sendIcon} height={25} width={25} alt="submit" />
+              <Image src={sendIcon} height={25} width={25} alt="submit" />
             )}
           </Button>
         </div>
@@ -212,7 +212,12 @@ const Chirps = ({ height }) => {
           {chirps?.length === 0 && (
             <div className="_noChirpsFound">
               <div className="_placeholder">
-                <img src={assets.overlays.imgPlaceholder2} alt="" />
+                <Image
+                  height={50}
+                  width={50}
+                  src={assets.overlays.imgPlaceholder2}
+                  alt=""
+                />
               </div>
               <p>Be the first one to post !</p>
             </div>

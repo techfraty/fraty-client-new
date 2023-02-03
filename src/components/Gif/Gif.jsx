@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 
-import { fetchServices } from "../../../util/services";
-import { postServices } from "../../../util/services";
-import Loader from "../../../components/Loader";
-import Button from "../../../components/Button/Button";
-import { useAuthContext } from "../../../context/auth.context";
+import { fetchServices } from "../../util/services";
+import { postServices } from "../../util/services";
+import Loader from "../Loader";
+import Button from "../Button/Button";
+import { useAuthContext } from "../../context/auth.context";
 import { useGlobalState } from "@/context/global.context";
-import AppBtn from "./../../../components/common/Btn";
+import AppBtn from "../common/Btn";
+import { useQuery } from "@tanstack/react-query";
 
 const Gif = ({ handleClose }) => {
   const [trending, setTrending] = useState({});
@@ -60,7 +61,7 @@ const Gif = ({ handleClose }) => {
     });
     // console.log(gi)
     if (handleClose) handleClose();
-    // navigate("/createParty/add/1");
+    // navigate("/createparty/add/1");
   };
 
   // useEffect(() => {

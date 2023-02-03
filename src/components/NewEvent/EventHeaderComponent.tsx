@@ -6,6 +6,7 @@ import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { incrementTimeBy2Hours } from "../../util/utils";
 import assets from "../../assets";
+import Image from "next/image";
 
 const EventHeader = ({
   event,
@@ -14,8 +15,9 @@ const EventHeader = ({
   removeRSVPHandler,
   selectedEvent,
   reactionContainerRef,
-}) => {
-  const { eventID: eventIDParam } = useParams();
+  eventID,
+}: any) => {
+  // const { eventID: eventIDParam } = useParams();
   const { userInfo, userCred } = useGlobalState();
   const [copyStatus, setCopyStatus] = useState(false);
   const [showNotGoing, setshowNotGoing] = useState(false);
@@ -64,7 +66,7 @@ const EventHeader = ({
           }}
         >
           <span>Add to Calender</span>
-          <img src={assets.icons.calendarWhite} alt="" />
+          <Image src={assets.icons.calendarWhite} alt="" />
         </AppBtn>
         <AppBtn
           display="flex"
@@ -73,7 +75,7 @@ const EventHeader = ({
           onClick={copyEventShareLink}
         >
           <span>{copyStatus ? "Event link copied!" : "Share event"}</span>
-          <img src={assets.icons.share} alt="" />
+          <Image src={assets.icons.share} alt="" />
         </AppBtn>
       </div>
       <div className="reactionsss">
@@ -81,7 +83,7 @@ const EventHeader = ({
           <div className="_reaction">
             <div className="_reactionImg _reaction_going">
               {/* <img src={goingImage} alt="going-to-event" /> */}
-              <img
+              <Image
                 src={assets.reactions.going2}
                 alt="going"
                 className="overlay_image_reaction"
@@ -116,7 +118,7 @@ const EventHeader = ({
                   <div className="_reactionImg _reaction_going">
                     {/* <img src={notGoingImage} alt="going-to-event" /> */}
 
-                    <img
+                    <Image
                       src={assets.reactions.nope}
                       alt="not-going-to-event"
                       className="overlay_image_reaction"

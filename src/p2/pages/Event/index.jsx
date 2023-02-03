@@ -516,7 +516,7 @@ const EventPage = () => {
   }
 
   function handleClickEditEvent() {
-    navigate(`/createParty/edit/${selectedEvent?._id}`);
+    navigate(`/createparty/edit/${selectedEvent?._id}`);
   }
   console.log(inWaitingRoom);
 

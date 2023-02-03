@@ -1,10 +1,11 @@
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 
 const EventImageCard = ({ imgSrc, size, onClickImage, idx }) => {
   return (
     <EventImageCardCtr size={size} onClick={() => onClickImage(idx)}>
-      <img src={imgSrc} alt="event" />
+      <Image src={imgSrc} alt="event" />
     </EventImageCardCtr>
   );
 };
