@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Loader from "../../components/Loader";
-import MemberCard from "../../components/MemberCard";
-import { useAuthContext } from "../../context/auth.context";
-import { useGlobalState } from "../../context/global.context";
-import { mixins } from "../../styles/global.theme";
-import { fetchServices } from "./../../util/services";
+import Loader from "../../../components/Loader";
+import MemberCard from "../../../components/MemberCard";
+import { useAuthContext } from "../../../context/auth.context";
+import { useGlobalState } from "../../../context/global.context";
+import { mixins } from "../../../styles/global.theme";
+import { fetchServices } from "../../../util/services";
+import { useRouter } from "next/router";
 
 const MembersList = () => {
-  const { state } = useLocation();
+  const router = useRouter();
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const { userDetails, currentUser } = useAuthContext();
   const { fetchEventDetails } = fetchServices;
-
+  const state = {
+    Eventid: router.query.eventId,
+    wallet: currentUser?.phoneNumber,
+  };
   React.useEffect(() => {
     const fetchEvents = async () => {
       console.log(state);
@@ -24,7 +27,8 @@ const MembersList = () => {
         eventID: state?.Eventid,
         address: state?.wallet,
       });
-      const waitlist = state?.waitList;
+      console.log({ data });
+      const waitlist = data?.waitList;
       let waiting = [];
       let waitingIds = [];
       if (waitlist) {
@@ -33,7 +37,7 @@ const MembersList = () => {
       }
       const filteredMembers = data?.members?.filter(
         (m) =>
-          m?._id !== state?.creator &&
+          m?._id !== data?.creator &&
           waitingIds?.findIndex((e) => e === m?._id) === -1
       );
       setMembers(filteredMembers);
@@ -42,7 +46,7 @@ const MembersList = () => {
     console.log(state.Eventid);
     setCurrentPageTitle("Members");
     fetchEvents();
-  }, []);
+  }, [currentUser, router]);
 
   console.log({ members });
   useEffect(() => {

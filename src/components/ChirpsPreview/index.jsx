@@ -1,14 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import assets from "../../assets";
 import { mixins } from "../../styles/global.theme";
 import ChirpCard from "../ChirpCard";
-import Chirps from "../../pages/Chirps/index";
+import { useRouter } from "next/router";
+import Chirps from "../Chirps";
 const ChirpsPreview = ({ height, chirps, eventID }) => {
-  const navigate = useNavigate();
+  const navigate = useRouter();
   const openAllChirps = () => {
-    navigate(`/chirps/${eventID}`);
+    navigate.push(`/chirps/${eventID}`);
   };
 
   return (
@@ -19,7 +19,7 @@ const ChirpsPreview = ({ height, chirps, eventID }) => {
           See all chirps
         </span>
       </div>
-      <Chirps height={height}></Chirps>
+      <Chirps eventID={eventID} height={height}></Chirps>
     </ChirpsCtr>
   );
 };

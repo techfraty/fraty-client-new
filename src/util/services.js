@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AUTH_TOKEN } from "./constants";
 
-export const BE_URL = process.env.NEXT_PUBLIC_API_URL;
+export const BE_URL = process.env.NEXT_PUBLIC_API_URL + "/v1/user";
 
 export function authHeader(eventID) {
   const user = JSON.parse(localStorage.getItem(eventID));
@@ -79,6 +79,7 @@ const fetchFratyUser = async (wallet, eventID) => {
   return fratyusers;
 };
 const fetchEventDetails = async ({ eventID, address }) => {
+  if (!eventID) return;
   console.log(eventID, address);
   if (address) {
     const res = await axios.get(BE_URL + `/fraty/event/${eventID}`, {
@@ -99,6 +100,8 @@ const fetchEventDetailsFull = async ({ eventID, userId = null }) => {
   if (typeof window === "undefined") {
     return;
   }
+  if (!eventID) return;
+  console.log({ eventID });
   const res = await axios.get(BE_URL + `/fraty/fetch/${eventID}`, {
     params: {
       token: localStorage ? localStorage.getItem(AUTH_TOKEN) : "",

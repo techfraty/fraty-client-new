@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import assets from "../../assets";
@@ -16,6 +15,7 @@ import Compressor from "compressorjs";
 import { Button, Space, Upload } from "antd";
 import "antd/dist/reset.css";
 import { abort } from "process";
+import { useRouter } from "next/router";
 const ImgUpload = ({ src, onChange, fileList }) => {
   return (
     <ImgUploadCtr>
@@ -81,7 +81,8 @@ const ImgUploadCtr = styled.div`
 
 const GalleryPage = () => {
   const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
-  const { eventID } = useParams();
+  const router = useRouter();
+  const eventID = router.query.eventId;
   const { userDetails } = useAuthContext();
   const [photos, setPhotos] = useState([]);
   const [compressedPhotos, setCompressedPhotos] = useState([]);

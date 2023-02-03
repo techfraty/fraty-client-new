@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import assets from "../../assets";
-import { useNavigate, useParams } from "react-router-dom";
 import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
-import AppBtn from "../../components/common/Btn";
-import Modal from "../../components/Modal/Modal";
+import AppBtn from "../common/Btn";
+import Modal from "../Modal/Modal";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -16,15 +15,16 @@ import {
 } from "../../util/services";
 import { AUTH_TOKEN } from "../../util/constants";
 import { useAuthContext } from "../../context/auth.context";
-import Loader from "../../components/Loader";
-import Button from "../../components/Button/Button";
+import Loader from "../Loader";
+import Button from "../Button/Button";
 import calendarIcon from "../../assets/icons/calendar.svg";
 import clockIcon from "../../assets/icons/clock.svg";
 import shareIcon from "../../assets/icons/share.svg";
 import ticketIcon from "../../assets/icons/ticket.svg";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
-const Publish = () => {
-  let { type, id } = useParams();
+const Publish = ({ id, type }: any) => {
   // const { address, isConnected } = useAccount();
   const {
     showModalPublish,
@@ -41,9 +41,8 @@ const Publish = () => {
     setCustomBackHeaderLink,
   } = useGlobalState();
   const { userDetails, currentUser } = useAuthContext();
-  const [formDataStor, setFormDataStor] = useState({});
-
-  const navigate = useNavigate();
+  const [formDataStor, setFormDataStor] = useState<any>();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(true);
   const [editView, setEditView] = useState(false);
@@ -63,7 +62,7 @@ const Publish = () => {
 
   useEffect(() => {
     if (draftEvents?.length && id) {
-      const currDraftEvent = draftEvents.find((item) => item.id === id);
+      const currDraftEvent = draftEvents.find((item: any) => item.id === id);
       if (currDraftEvent) {
         setFormDataStor(currDraftEvent);
       }
@@ -72,16 +71,17 @@ const Publish = () => {
 
   const publish = async () => {
     setLoading(true);
-    if (!formDataStor) return;
+    console.log({ formDataStor });
+    if (!formDataStor?.creator) return;
     if (!currentUser) {
       toast.error("Please login to publish event");
     }
-    if (currentUser.id._id !== formDataStor.creator) {
+    if (currentUser.id._id !== formDataStor?.creator) {
       toast.error("Hmm, seems like you are not the creator of this event");
       return;
     }
 
-    formDataStor.creator = currentUser.id._id;
+    formDataStor.creator = currentUser?.id?._id;
     formDataStor.publishStatus = "published";
     await patchServices
       .updateEvent({ publishStatus: "published", _id: id })
@@ -93,8 +93,8 @@ const Publish = () => {
         // navigate("/")
         console.log(formDataStor);
 
-        setDraftEvents((prev) =>
-          prev.filter((ev) => ev.id !== formDataStor.id)
+        setDraftEvents((prev: any) =>
+          prev.filter((ev: any) => ev.id !== formDataStor.id)
         );
       })
       .catch(function (response) {
@@ -104,7 +104,7 @@ const Publish = () => {
     setLoading(false);
   };
   const updateEvent = () => {
-    navigate(`/createParty/edit/${id}`);
+    router.push(`/createparty/edit/${id}`);
   };
   // if(editView){
 
@@ -121,22 +121,14 @@ const Publish = () => {
   useEffect(() => {
     const token = localStorage.getItem(AUTH_TOKEN);
     if (!token) {
-      navigate(`/event/${id}`, { replace: true });
+      router.replace(`/event/${id}`);
     }
     if (currentUser && selectedEvent?.creator) {
       if (currentUser?.id?._id !== selectedEvent?.creator) {
-        navigate(`/event/${id}`, { replace: true });
+        router.replace(`/event/${id}`);
       }
     }
-  }, [
-    formDataStor,
-    selectedEvent,
-    userDetails,
-    currentUser,
-    id,
-    type,
-    navigate,
-  ]);
+  }, [formDataStor, selectedEvent, userDetails, currentUser, id, type, router]);
   // }
 
   useEffect(() => {
@@ -163,8 +155,10 @@ const Publish = () => {
     console.log(selectedEvent);
     const data = await deleteEvent(selectedEvent?._id);
     console.log(data);
-    navigate("/", { replace: true });
-    setDraftEvents((prev) => prev.filter((ev) => ev.id !== formDataStor.id));
+    router.replace("/");
+    setDraftEvents((prev: any) =>
+      prev.filter((ev: any) => ev.id !== formDataStor.id)
+    );
     toast.success("Event deleted");
   };
   return (
@@ -177,13 +171,13 @@ const Publish = () => {
           <div className="_eventDetails">
             <div className="_eventImg">
               {editView ? (
-                <img src={selectedEvent?.image} alt="" />
+                <Image src={selectedEvent?.image} alt="" />
               ) : formDataStor?.image ? (
-                <img src={formDataStor?.image} alt="" />
-              ) : formDataStor.imageUrl ? (
-                <img src={formDataStor?.imageUrl} alt="" />
+                <Image src={formDataStor?.image} alt="" />
+              ) : formDataStor?.imageUrl ? (
+                <Image src={formDataStor?.imageUrl} alt="" />
               ) : (
-                <img
+                <Image
                   src="https://media1.giphy.com/media/3o7TKw4EWO6QR7YIKY/giphy.gif?cid=d469b3393ul8gb60blkcp2gzq6tis0bns27om87b75lvjm4t&rid=giphy.gif&ct=g"
                   alt=""
                 />
@@ -194,7 +188,9 @@ const Publish = () => {
                 square={true}
                 btnBG={"var(--color-green)"}
                 className="btnStyle"
-                onClick={() => navigate(`/waitinglist/${selectedEvent?._id}`)}
+                onClick={() =>
+                  router.push(`/waitinglist/${selectedEvent?._id}`)
+                }
               >
                 See Waiting list
               </AppBtn>
@@ -216,7 +212,7 @@ const Publish = () => {
             </div>
             <div className="twob">
               <p className="_time">
-                <img src={calendarIcon} alt="" />
+                <Image src={calendarIcon} alt="" />
                 <span>
                   {editView
                     ? dayjs(selectedEvent?.eventStartDate).format("MMM DD")
@@ -224,7 +220,7 @@ const Publish = () => {
                 </span>
               </p>
               <p className="_time">
-                <img src={clockIcon} alt="" />
+                <Image src={clockIcon} alt="" />
                 <span>
                   {editView
                     ? selectedEvent?.eventStartTime
@@ -234,7 +230,7 @@ const Publish = () => {
             </div>
             {formDataStor?.costPerPerson ? (
               <p className="_time">
-                <img src={ticketIcon} alt="" />
+                <Image src={ticketIcon} alt="" />
                 <span>
                   ₹
                   {editView
@@ -253,7 +249,7 @@ const Publish = () => {
                 onClick={() => {
                   window.open(selectedEvent?.locationURL, "_blank");
                 }}
-                icon={<img src={assets.icons.locationWhite} alt="" />}
+                icon={<Image src={assets.icons.locationWhite} alt="" />}
               >
                 {editView ? selectedEvent?.location : formDataStor?.location}
               </Button>
@@ -269,7 +265,7 @@ const Publish = () => {
                   }}
                 >
                   <p>{formDataStor?.url}</p>
-                  <img src={assets.icons.link} alt="link" />
+                  <Image src={assets.icons.link} alt="link" />
                 </div>
               ) : selectedEvent?.url ? (
                 <div
@@ -290,19 +286,22 @@ const Publish = () => {
           <div className="_rsvpReactions">
             <div className="_reaction">
               <div className="_reactionImg">
-                <img src={assets.reactions.going} alt="going-to-event" />
+                <Image src={assets.reactions.going} alt="going-to-event" />
               </div>
               <p className="_reactionLabel">I'm Going !</p>
             </div>
             <div className="_reaction">
               <div className="_reactionImg">
-                <img src={assets.reactions.maybe} alt="mayber-going-to-event" />
+                <Image
+                  src={assets.reactions.maybe}
+                  alt="mayber-going-to-event"
+                />
               </div>
               <p className="_reactionLabel">Maybe !</p>
             </div>
             <div className="_reaction">
               <div className="_reactionImg">
-                <img src={assets.reactions.nope} alt="not-going-to-event" />
+                <Image src={assets.reactions.nope} alt="not-going-to-event" />
               </div>
               <p className="_reactionLabel">Not Going !</p>
             </div>
@@ -455,6 +454,7 @@ const EventCtr = styled.div`
       &:disabled {
         background-color: grey !important;
         cursor: not-allowed;import Loader from './../../components/Loader/index';
+import { useRouter } from 'next/router';
 
       }
       &:active {

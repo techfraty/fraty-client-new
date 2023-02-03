@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import assets from "../../assets";
 import { mixins } from "../../styles/global.theme";
 import EventImageCard from "../EventImageCard";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 const GalleryPreview = ({ images, eventID, onClickImage }) => {
   const [top4Images, setTop4Images] = React.useState([]);
@@ -12,9 +13,9 @@ const GalleryPreview = ({ images, eventID, onClickImage }) => {
     if (images?.length) setTop4Images(images.filter((_, idx) => idx < 3));
   }, [images]);
 
-  const navigate = useNavigate();
+  const navigate = useRouter();
   const openGallery = () => {
-    navigate(`/gallery/${eventID}`);
+    navigate.push(`/gallery/${eventID}`);
   };
 
   return (
@@ -39,7 +40,12 @@ const GalleryPreview = ({ images, eventID, onClickImage }) => {
       ) : (
         <div className="_noPostsFound" onClick={openGallery}>
           <div className="_placeholder">
-            <img src={assets.overlays.imgPlaceholder2} alt="" />
+            <Image
+              height={50}
+              width={50}
+              src={assets.overlays.imgPlaceholder2}
+              alt=""
+            />
           </div>
           <p>Be the first one to post !</p>
         </div>

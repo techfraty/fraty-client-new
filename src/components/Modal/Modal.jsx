@@ -3,12 +3,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import assets from "../../assets";
 import { useGlobalState } from "../../context/global.context";
-import { useNavigate, useParams } from "react-router-dom";
 import crossIcon from "../../assets/images/icons/close.svg";
 import Button from "../Button/Button";
+import { useRouter } from "next/router";
+import Image from "next/image";
 const Modal = () => {
-  const { id: eventId } = useParams();
-  const navigate = useNavigate();
+  const navigate = useRouter();
+  const eventId = navigate.query.eventId;
 
   const [copyStatus, setCopyStatus] = useState(false);
   const copyEventShareLink = () => {
@@ -33,12 +34,12 @@ const Modal = () => {
             }}
           >
             <h2>Share your party! 🍾</h2>
-            <img
+            <Image
               src={crossIcon}
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setShowModalPublish(false);
-                navigate("/");
+                navigate.push("/");
                 localStorage.removeItem("FormData");
               }}
             />
@@ -48,7 +49,7 @@ const Modal = () => {
         <div className="btnBox">
           <div className="boxbtn" onClick={copyEventShareLink}>
             {!copyStatus ? <p>Share link</p> : <p>Link Copied</p>}
-            <img src={assets.icons.link} alt="" />
+            <Image src={assets.icons.link} alt="" />
           </div>
         </div>
         <div className="btnBox">
@@ -58,7 +59,7 @@ const Modal = () => {
             className="continueBtn"
             bgColor="#EA664D"
             onClick={() => {
-              navigate(`/event/${eventId}`, { replace: true });
+              navigate.replace(`/event/${eventId}`);
             }}
           >
             Continue to party Page
@@ -137,7 +138,8 @@ const ModalContiner = styled.div`
     font-family: var(--ff-light);
     p {
       margin: 0 !important;
-    }
+    }import { useRouter } from 'next/router';
+
   }
   .btnp {
     cursor: pointer;

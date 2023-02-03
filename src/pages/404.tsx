@@ -1,23 +1,24 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import assets from "../../assets";
-import AppBtn from "../../components/common/Btn";
-import { useGlobalState } from "../../context/global.context";
-import { mixins } from "../../styles/global.theme";
+import assets from "../assets";
+import AppBtn from "../components/common/Btn";
+import { useGlobalState } from "../context/global.context";
+import { mixins } from "../styles/global.theme";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 const NotFound = () => {
-  const navigate = useNavigate();
+  const navigate = useRouter();
   const { setCurrentPageTitle } = useGlobalState();
   React.useEffect(() => {
     setCurrentPageTitle("Opps, Invalid Route!");
   }, []);
   return (
     <NotFoundCtr>
-      <div className="_img">
-        <img src={assets.notfound} alt="404" />
+      <div>
+        <Image className="_img" src={assets.notfound} alt="404" />
       </div>
-      <AppBtn onClick={() => navigate("/")} btnBG="var(--color-yellow)">
+      <AppBtn onClick={() => navigate.push("/")} btnBG="var(--color-yellow)">
         Rescue Me !
       </AppBtn>
     </NotFoundCtr>

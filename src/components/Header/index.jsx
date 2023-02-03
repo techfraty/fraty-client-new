@@ -46,7 +46,7 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
     if (backToHome) {
       router.push("/");
     } else {
-      router.push(-1);
+      router.back();
     }
   }
   const { setShowAuthModal, showAuthModal } = useGlobalState();

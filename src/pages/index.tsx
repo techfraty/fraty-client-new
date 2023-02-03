@@ -4,9 +4,16 @@ import Header from "@/components/Header";
 import HomePage from "@/components/home";
 import { useGlobalState } from "@/context/global.context";
 import AuthModal from "@/components/AuthModal/AuthModal";
+import { AUTH_TOKEN } from "@/util/constants";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const { showAuthModal, setShowAuthModal } = useGlobalState();
+  const [tokenPresent, setTokenPresent] = useState<any>(false);
+
+  useEffect(() => {
+    setTokenPresent(localStorage.getItem(AUTH_TOKEN));
+  }, []);
   return (
     <>
       {showAuthModal && (
@@ -22,8 +29,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* <LandingPage /> */}
-      <HomePage />
+      {!tokenPresent ? <LandingPage /> : <HomePage />}
     </>
   );
 }

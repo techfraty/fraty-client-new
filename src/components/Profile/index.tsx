@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import assets from "../../assets";
-import AppBtn from "../../components/common/Btn";
+import AppBtn from "../common/Btn";
 import { useAuthContext } from "../../context/auth.context";
 import { useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { authServices, postServices } from "../../util/services";
-import Button from "./../../components/Button/Button";
+import Button from "../Button/Button";
+import { useRouter } from "next/router";
 
 const Profile = () => {
   const { currentUser, userDetails, setUserDetails, setCurrentUser } =
@@ -25,21 +25,21 @@ const Profile = () => {
     number: userDetails?.wallet,
   });
 
-  const navigate = useNavigate();
+  const router = useRouter();
 
-  const recordResponse = (e) => {
+  const recordResponse = (e: any) => {
     const res = { key: e.target.name, value: e.target.value };
     setUserInput((prev) => ({ ...prev, [res.key]: res.value }));
   };
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/");
+      router.push("/");
     }
     setCurrentPageTitle("My Profile");
   }, [currentUser]);
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: any) => {
     e.preventDefault();
     try {
       // console.log(userInput?.name);
@@ -56,7 +56,7 @@ const Profile = () => {
       );
       console.log(res);
       if (res.status === 200) {
-        setUserDetails((prev) => ({
+        setUserDetails((prev: any) => ({
           ...prev,
           wallet: userInput?.number,
           name: userInput?.name,
@@ -68,7 +68,7 @@ const Profile = () => {
           },
           song: userInput?.song ?? null,
         }));
-        setCurrentUser((prev) => ({
+        setCurrentUser((prev: any) => ({
           ...prev,
           wallet: userInput?.number,
           name: userInput?.name,
@@ -91,7 +91,7 @@ const Profile = () => {
   const logout = () => {
     // disconnect();
     window.localStorage.clear();
-    navigate("/", { replace: true });
+    router.push("/");
     window.location.reload();
   };
 
