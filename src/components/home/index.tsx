@@ -15,6 +15,7 @@ import { DRAFT_EVENTS, FRATY_EVENTS } from "../../util/constants";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import { useAuthContext } from "../../context/auth.context";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const HomePage = () => {
   const [eventsCollection, setEventsCollection] = useState([]);
@@ -222,6 +223,22 @@ const HomePage = () => {
 
   return (
     <HomeCtr>
+      <Head>
+        <meta
+          property="og:title"
+          content="Heyyoo, You have been invited to party on Fraty!"
+        />
+        <meta property="og:image" content="https://fraty.in/thumbnail.jpeg" />
+
+        <meta
+          property="og:description"
+          content="Planning parties made simple and delightful for all the smexy people out their."
+        />
+        <meta property="og:url" content="https://fraty.in" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="627" />
+        <meta property="og:type" content="website" />
+      </Head>
       <h1 className="title">
         Hey {userCred?.name ?? "babe"}, let&apos;s meet?
       </h1>
