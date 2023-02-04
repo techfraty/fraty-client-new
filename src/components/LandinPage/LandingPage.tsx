@@ -192,7 +192,7 @@ const LandingPage = () => {
           <Image src={assets.overlays.Group3} />
         </div> */}
           <div style={{ marginTop: "50px" }}>
-            {[...Array(10)].map((e, i) => {
+            {new Array(10).fill(null).map((e: any, i: number) => {
               return (
                 <motion.div
                   key={i}
@@ -208,8 +208,8 @@ const LandingPage = () => {
                     x,
                   }}
                 >
-                  {[...Array(10).fill("Fraty")].map((str) => (
-                    <Image key={str} alt="image" src={outlinedTextFraty} />
+                  {[...Array(10).fill("Fraty")].map((str, i: number) => (
+                    <Image key={i} alt="image" src={outlinedTextFraty} />
                   ))}
                 </motion.div>
               );
