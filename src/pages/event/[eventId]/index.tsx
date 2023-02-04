@@ -445,10 +445,10 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
   return (
     <EventCtr>
       <Head>
-        <title>{selectedEvent?.name}</title>
+        <title>{event?.name}</title>
         <meta name="description" content="Hey, checkout this event on Fraty" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={selectedEvent?.name} />
+        <meta property="og:title" content={event?.name} />
         <meta
           property="og:description"
           content="Hey, checkout this event on fraty.in"
@@ -456,7 +456,7 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
         <meta
           property="og:image"
           content={
-            selectedEvent?.image ||
+            event?.image ||
             "https://www.meme-arsenal.com/memes/cc93311366bfbca1bff40222ec269da9.jpg"
           }
         ></meta>
