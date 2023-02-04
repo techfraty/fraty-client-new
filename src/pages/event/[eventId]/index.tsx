@@ -445,10 +445,10 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
   return (
     <EventCtr>
       <Head>
-        <title>{selectedEvent?.title}</title>
+        <title>{selectedEvent?.name}</title>
         <meta name="description" content="Hey, checkout this event on Fraty" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={selectedEvent?.title} />
+        <meta property="og:title" content={selectedEvent?.name} />
         <meta
           property="og:description"
           content="Hey, checkout this event on fraty.in"

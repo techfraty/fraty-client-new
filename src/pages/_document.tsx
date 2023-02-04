@@ -5,7 +5,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta
+        {/* <meta
           name="description"
           content="Planning parties made simple and delightful for all the smexy people out their."
         />
@@ -37,7 +37,7 @@ export default function Document() {
         <meta
           property="twitter:image"
           content="https://fraty.in/thumbnail.jpeg"
-        />
+        /> */}
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
