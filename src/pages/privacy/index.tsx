@@ -21,14 +21,14 @@ export default function PrivacyPoilcy() {
           We use this data to provide our services, improve our services, and to
           personalize the user experience. We may also use this data for
           marketing and advertising purposes. We will never sell or otherwise
-          share this data with 3rd party platforms without the user’s explicit
-          consent. We use appropriate technical, administrative, and physical
-          security measures to protect the personal data we collect and store.
-          This includes access controls, and regular monitoring and testing of
-          our systems and services. We will only retain user data for as long as
-          it is necessary to provide our services, or as otherwise required by
-          law. We will provide users with access and the ability to update or
-          delete their personal data, when requested. We might use the
+          share this data with 3rd party platforms without the user&apos;s
+          explicit consent. We use appropriate technical, administrative, and
+          physical security measures to protect the personal data we collect and
+          store. This includes access controls, and regular monitoring and
+          testing of our systems and services. We will only retain user data for
+          as long as it is necessary to provide our services, or as otherwise
+          required by law. We will provide users with access and the ability to
+          update or delete their personal data, when requested. We might use the
           information we hold to send you marketing communications, communicate
           with you about our product, and inform you about our policies and
           terms. When you contact us, we also use your information to respond to

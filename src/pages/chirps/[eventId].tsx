@@ -6,7 +6,7 @@ type Props = {};
 
 const ChirpsPage = (props: Props) => {
   const router = useRouter();
-  return <ChirpsPreview eventID={router.query.eventId} />;
+  return <ChirpsPreview eventID={`${router.query.eventId}`} />;
 };
 
 export default ChirpsPage;

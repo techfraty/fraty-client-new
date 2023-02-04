@@ -5,7 +5,14 @@ import { mixins } from "../../styles/global.theme";
 import ChirpCard from "../ChirpCard";
 import { useRouter } from "next/router";
 import Chirps from "../Chirps";
-const ChirpsPreview = ({ height, chirps, eventID }) => {
+
+interface Props {
+  height?: string;
+  chirps?: any;
+  eventID?: string;
+}
+
+const ChirpsPreview: React.FC<Props> = ({ height, chirps, eventID }) => {
   const navigate = useRouter();
   const openAllChirps = () => {
     navigate.push(`/chirps/${eventID}`);
