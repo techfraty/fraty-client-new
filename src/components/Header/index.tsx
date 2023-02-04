@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import assets from "../../assets";
 import { useAuthContext } from "../../context/auth.context";
-import { useGlobalState } from "../../context/global.context";
+import { IGlobalContext, useGlobalState } from "../../context/global.context";
 import { mixins } from "../../styles/global.theme";
 import { AUTH_TOKEN } from "../../util/constants";
 import AuthModal from "../AuthModal/AuthModal";
@@ -12,15 +12,30 @@ import WalletDD from "../WalletDD";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
+interface Props {
+  backToHome?: boolean;
+  handleBack?: any;
+  pageTitle?: string;
+  customStyle?: any;
+}
+
+const Header: React.FC<Props> = ({
+  backToHome = false,
+  handleBack,
+  pageTitle,
+  customStyle,
+}) => {
   const router = useRouter();
 
   const pathname = router.pathname;
   const [showBrandHeader, setShowBrandHeader] = useState(false);
-  const { currentPageTitle, customBackHeaderLink, setCustomBackHeaderLink } =
-    useGlobalState();
+  const {
+    currentPageTitle,
+    customBackHeaderLink,
+    setCustomBackHeaderLink,
+  }: IGlobalContext = useGlobalState();
   const [hideBackNav, setHideBackNav] = useState(false);
-  const { currentUser } = useAuthContext();
+  const { currentUser }: any = useAuthContext();
   console.log(pathname);
   useEffect(() => {
     if (pathname === "/user-cred") {
@@ -40,6 +55,7 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
     }
     if (customBackHeaderLink) {
       let tempLink = customBackHeaderLink;
+      // @ts-ignore
       setCustomBackHeaderLink(null);
       return router.push(tempLink);
     }
@@ -82,8 +98,11 @@ const Header = ({ backToHome = false, handleBack, pageTitle, customStyle }) => {
         <div className="_navHeader">
           {!hideBackNav ? (
             <div>
-              {" "}
-              <button className="_goBackBtn" onClick={handleClickBack}>
+              <button
+                type="button"
+                className="_goBackBtn"
+                onClick={handleClickBack}
+              >
                 <Image src={assets.icons.arrowLeft} alt="go-back" />
               </button>
             </div>
