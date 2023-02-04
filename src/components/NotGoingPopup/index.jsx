@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 import assets from "../../assets";
@@ -10,7 +11,7 @@ const NotGoingPopup = ({ closeModal, text, proceed }) => {
     <NotGoinPopupCtr>
       <div className="_popupMessage">
         <div className="_reactionImg">
-          <img src={assets.reactions.alright} alt="" />
+          <Image src={assets.reactions.alright} alt="" />
         </div>
         <p className="_note">{text}</p>
         <div className="_btns">

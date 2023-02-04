@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 import assets from "../../assets";
@@ -5,7 +6,7 @@ import assets from "../../assets";
 const Loader = () => {
   return (
     <LoaderCtr>
-      <img src={assets.loader} alt="" />
+      <Image src={assets.loader} alt="" />
     </LoaderCtr>
   );
 };

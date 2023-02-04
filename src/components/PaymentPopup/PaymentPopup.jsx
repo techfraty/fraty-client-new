@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useGlobalState } from "../../context/global.context";
 import AppBtn from "../common/Btn";
 import Button from "../Button/Button";
+import Image from "next/image";
 
 const PaymentPopup = ({ confirmUserRequest, upi, handleClose, cost }) => {
   const { paymentConfompopup, setPatmetConform, setshowPopup } =
@@ -63,7 +64,7 @@ const PaymentPopup = ({ confirmUserRequest, upi, handleClose, cost }) => {
                 onClick={payment}
                 fullWidth
                 icon={
-                  <img
+                  <Image
                     src={assets.icons.arrow}
                     alt=""
                     style={{ filter: "invert(1)" }}

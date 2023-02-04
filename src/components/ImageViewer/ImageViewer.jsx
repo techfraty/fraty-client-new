@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
 import assets from "../../assets";
@@ -8,7 +9,7 @@ const ImageViewer = ({ imageUrl, handleClose }) => {
       <div className="wrapper">
         <img src={imageUrl} alt="" style={{ width: "100%", height: "100%" }} />
       </div>
-      <img
+      <Image
         src={assets.icons.close}
         className="closebtn"
         alt="close"
