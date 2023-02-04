@@ -7,19 +7,22 @@ import { useGlobalState } from "../../../context/global.context";
 import { mixins } from "../../../styles/global.theme";
 import { fetchServices } from "../../../util/services";
 import { useRouter } from "next/router";
+import { NextPage } from "next";
 
-const MembersList = () => {
+const MembersList: NextPage = () => {
   const router = useRouter();
-  const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
+  const { setCurrentPageTitle, setCustomBackHeaderLink }: any =
+    useGlobalState();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { userDetails, currentUser } = useAuthContext();
+  const { userDetails, currentUser }: any = useAuthContext();
   const { fetchEventDetails } = fetchServices;
-  const state = {
+  const state: any = {
     Eventid: router.query.eventId,
     wallet: currentUser?.phoneNumber,
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     const fetchEvents = async () => {
       console.log(state);
       setLoading(true);
@@ -30,15 +33,15 @@ const MembersList = () => {
       console.log({ data });
       const waitlist = data?.waitList;
       let waiting = [];
-      let waitingIds = [];
+      let waitingIds: Array<any> = [];
       if (waitlist) {
         waiting = await fetchServices.fetchWaithinglist(state?.Eventid);
-        waitingIds = waiting?.data?.map((ev) => ev._id);
+        waitingIds = waiting?.data?.map((ev: any) => ev._id);
       }
       const filteredMembers = data?.members?.filter(
-        (m) =>
-          m?._id !== data?.creator &&
-          waitingIds?.findIndex((e) => e === m?._id) === -1
+        (member: any) =>
+          member?._id !== data?.creator &&
+          waitingIds?.findIndex((e) => e === member?._id) === -1
       );
       setMembers(filteredMembers);
       setLoading(false);
@@ -59,7 +62,7 @@ const MembersList = () => {
       {!loading && (!members || members?.length === 0) && (
         <p>No members present.</p>
       )}
-      {members?.map((member, idx) => (
+      {members?.map((member: any, idx) => (
         <MemberCard
           creator={state?.creator}
           isEventCreator={state?.isEventCreator}

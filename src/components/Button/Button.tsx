@@ -1,7 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-const Button = ({
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick?: () => void;
+  icon?: React.ReactNode;
+  bgColor?: string;
+  textColor?: string;
+  type?: "button" | "submit" | "reset";
+  fullWidth?: boolean;
+  className?: string;
+}
+
+const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
   icon,

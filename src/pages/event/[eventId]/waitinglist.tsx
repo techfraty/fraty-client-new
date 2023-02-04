@@ -12,14 +12,15 @@ import { useRouter } from "next/router";
 const Waiting = () => {
   const router = useRouter();
   const eventIDParam = router.query.eventId;
-  const { currentUser } = useAuthContext();
+  const { currentUser }: any = useAuthContext();
   const [waitinglist, setWaitinglist] = React.useState([]);
-  const { setCurrentPageTitle, setCustomBackHeaderLink } = useGlobalState();
+  const { setCurrentPageTitle, setCustomBackHeaderLink }: any =
+    useGlobalState();
 
   const { isLoading: fwaithinglist } = useQuery({
     queryKey: ["fetchWaithing"],
     queryFn: async () => fetchServices.fetchWaithinglist(eventIDParam),
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log(data, currentUser);
       setWaitinglist(
         data.data.filter((prev: any) => prev?._id !== currentUser?.id?._id)
@@ -44,14 +45,15 @@ const Waiting = () => {
       ) : (
         waitinglist.map((data, idx: number) => (
           <WaitingCard
+            key={idx}
             bg={
-              parseInt(idx) % 5 === 0
+              idx % 5 === 0
                 ? "var(--color-orange)"
-                : parseInt(idx) % 5 >= 4
+                : idx % 5 >= 4
                 ? "var(--color-purple)"
-                : parseInt(idx) % 5 >= 3
+                : idx % 5 >= 3
                 ? "var(--color-blue)"
-                : parseInt(idx) % 5 >= 2
+                : idx % 5 >= 2
                 ? "var(--color-yellow)"
                 : "var(--color-green)"
             }

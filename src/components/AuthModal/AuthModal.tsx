@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
 import { useState } from "react";
 import { mixins } from "../../styles/global.theme";
@@ -10,7 +10,17 @@ import { useAuthContext } from "../../context/auth.context";
 import { authServices, fetchServices, postServices } from "../../util/services";
 import { AUTH_TOKEN, COUNTRY_CODES } from "../../util/constants";
 
-const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
+interface AuthModalProps {
+  handleClose: () => void;
+  event?: any;
+  onSuccessfullLogin?: () => void;
+}
+
+const AuthModal: React.FC<AuthModalProps> = ({
+  handleClose,
+  event,
+  onSuccessfullLogin,
+}) => {
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+91");
   const [name, setName] = useState("");
@@ -19,15 +29,16 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
   const [isOTPSent, setIsOTPSent] = useState(false);
   const [submitBtnText, setSubmitBtnText] = useState("Send OTP");
   const [userExists, setUserExists] = useState(true);
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   function generateRecaptcha() {
     if (typeof window === "undefined") return;
+    // @ts-ignore
     window.recaptchaVerifier = new RecaptchaVerifier(
       "sign-in-button",
       {
         size: "invisible",
-        callback: (response) => {
+        callback: (response: any) => {
           // reCAPTCHA solved, allow signInWithPhoneNumber.
           setIsSignInAllowed(true);
         },
@@ -36,9 +47,9 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
     );
   }
 
-  const { setCurrentUser, setUserDetails, setToken } = useAuthContext();
+  const { setCurrentUser, setUserDetails, setToken }: any = useAuthContext();
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isOTPSent) return handleCheckOTP();
 
@@ -50,6 +61,7 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
     if (typeof window === "undefined") return;
     generateRecaptcha();
     // if (!isSignInAllowed) return console.log("Not Allowed");
+    // @ts-ignore
     const appVerifier = window.recaptchaVerifier;
     const phoneNumber =
       countryCode?.replace(/\s/g, "") + phone.replace(/\s/g, "");
@@ -63,7 +75,7 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
       .then((confirmationResult) => {
         // SMS sent. Prompt user to type the code from the message, then sign the
         // user in with confirmationResult.confirm(code).
-
+        // @ts-ignore
         window.confirmationResult = confirmationResult;
         setIsOTPSent(true);
         setSubmitBtnText("Verify OTP");
@@ -78,7 +90,7 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
     // handleClose();
   }
 
-  async function loginHandler(user) {
+  async function loginHandler(user: any) {
     try {
       const { loginUser } = postServices;
       const res = await loginUser(String(user.phoneNumber), String(name));
@@ -97,11 +109,13 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
   function handleCheckOTP() {
     if (!otp) return alert("Please enter OTP");
     if (otp.length !== 6) return alert("OTP muust be 6 digits long");
+    // @ts-ignore
     if (!window.confirmationResult) return alert("Some error occured");
     setSubmitBtnText("Verifying OTP...");
+    // @ts-ignore
     window.confirmationResult
       .confirm(otp)
-      .then((result) => {
+      .then((result: any) => {
         // User signed in successfully.
         const user = result.user;
         console.log({ user });
@@ -113,13 +127,13 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
         setIsOTPSent(false);
         handleClose();
       })
-      .catch((error) => {
+      .catch((error: any) => {
         setSubmitBtnText("Verify OTP");
         alert("Some error occured");
       });
   }
 
-  function handleClickOutSide(e) {
+  function handleClickOutSide(e: any) {
     handleClose();
   }
 
@@ -206,9 +220,11 @@ const AuthModal = ({ handleClose, event, onSuccessfullLogin }) => {
 rgba(232, 162, 55, 1)"
             onClick={() => {
               // submit form using formRef
-              formRef.current.dispatchEvent(
-                new Event("submit", { bubbles: true })
-              );
+              if (formRef) {
+                formRef?.current?.dispatchEvent(
+                  new Event("submit", { bubbles: true })
+                );
+              }
             }}
             fullWidth
           >

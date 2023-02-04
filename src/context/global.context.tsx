@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 // import { useLocation } from "react-router-dom";
 // import { useAccount, useQuery } from "wagmi";
 import { FRATY_EVENTS } from "../util/constants";
@@ -6,11 +12,47 @@ import { fetchServices } from "../util/services";
 import { useAuthContext } from "./auth.context";
 import { useRouter } from "next/router";
 
-const GlobalContext = createContext({});
+interface IGlobalContext {
+  currentPageTitle: string | null;
+  setCurrentPageTitle: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedEvent: any;
+  setSelectedEvent: (event: any) => void;
+  userInfo: any;
+  setUserInfo: (userInfo: any) => void;
+  userCred: any;
+  gifPreview: any;
+  setgifPreview: (gif: any) => void;
+  showModalPublish: boolean;
+  setShowModalPublish: (show: boolean) => void;
+  formData: any;
+  setFormData: (data: any) => void;
+  events: any;
+  setEvents: (events: any) => void;
+  showpopup: boolean;
+  setshowPopup: (show: boolean) => void;
+  paymentConfompopup: boolean;
+  setPatmetConform: (show: boolean) => void;
+  gifView: boolean;
+  setGifview: (show: boolean) => void;
+  eventId: string | null;
+  setEventId: React.Dispatch<React.SetStateAction<string | null>>;
+  draftEvents: any;
+  setDraftEvents: (events: any) => void;
+  prevEventsFromLS: any;
+  setPrevEventsFromLS: (events: any) => void;
+  customBackHeaderLink: string | null;
+  setCustomBackHeaderLink: (link: string) => void;
+  showAuthModal: boolean;
+  setShowAuthModal: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-export default function GlobalContextProvider({ children }) {
-  const [currentPageTitle, setCurrentPageTitle] = useState(null);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+export const GlobalContext = createContext<IGlobalContext>(
+  {} as IGlobalContext
+);
+
+export default function GlobalContextProvider({ children }: any) {
+  const [currentPageTitle, setCurrentPageTitle] = useState<string | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [userInfo, setUserInfo] = useState(null);
   const [userCred, setUserCred] = useState(null);
   const [gifPreview, setgifPreview] = useState({
@@ -28,17 +70,19 @@ export default function GlobalContextProvider({ children }) {
   const [paymentConfompopup, setPatmetConform] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [gifView, setGifview] = useState(false);
-  const [eventId, setEventId] = useState(null);
+  const [eventId, setEventId] = useState<string | null>(null);
   const [draftEvents, setDraftEvents] = useState([]);
   const [prevEventsFromLS, setPrevEventsFromLS] = useState([]);
-  const [customBackHeaderLink, setCustomBackHeaderLink] = useState(null);
+  const [customBackHeaderLink, setCustomBackHeaderLink] = useState<
+    string | null
+  >(null);
 
   // const { pathname } = useLocation();
   const router = useRouter();
   const { pathname } = router;
   // const { address } = useAccount();
 
-  const { currentUser } = useAuthContext();
+  const { currentUser }: any = useAuthContext();
 
   // useEffect(() => {
   //   async function customFetchAllEvents() {
@@ -78,7 +122,7 @@ export default function GlobalContextProvider({ children }) {
     }
   }, [currentUser]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (pathname === "/") {
       setUserInfo(null);
       setSelectedEvent(null);

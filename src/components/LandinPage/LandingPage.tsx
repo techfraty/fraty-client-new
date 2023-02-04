@@ -27,7 +27,7 @@ import Image from "next/image";
 
 const LandingPage = () => {
   const [calculatedWidth, setCalculatedWidth] = React.useState(0);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [designCompText, setDesignCompText] = useState("Friends");
   const [designComp2Text, setDesignComp2Text] = useState("House Parties");
   const [flyerImage, setFlyerImage] = useState({
@@ -44,7 +44,7 @@ const LandingPage = () => {
   useLayoutEffect(() => {
     const updateSize = () => {
       setCalculatedWidth(
-        (containerRef.current.offsetWidth / Math.sqrt(3)) * 2 + 100
+        (Number(containerRef?.current?.offsetWidth) / Math.sqrt(3)) * 2 + 100
       );
     };
     window.addEventListener("resize", updateSize);
@@ -195,6 +195,7 @@ const LandingPage = () => {
             {[...Array(10)].map((e, i) => {
               return (
                 <motion.div
+                  key={i}
                   initial={{ rotate: -15 }}
                   style={{
                     display: "flex",
@@ -208,7 +209,7 @@ const LandingPage = () => {
                   }}
                 >
                   {[...Array(10).fill("Fraty")].map((str) => (
-                    <Image alt="image" src={outlinedTextFraty} />
+                    <Image key={str} alt="image" src={outlinedTextFraty} />
                   ))}
                 </motion.div>
               );
@@ -376,14 +377,24 @@ const LandingPage = () => {
   );
 };
 
-const DesignComp = ({ text, colorText }) => {
+const DesignComp = ({
+  text,
+  colorText,
+}: {
+  text: string;
+  colorText?: boolean;
+}) => {
   if (colorText) {
+    // @ts-ignore
     return <StyledH2 text={text}>{text}</StyledH2>;
   }
+  // @ts-ignore
   return <StyledH1 text={text}>{text}</StyledH1>;
 };
 
-const designColors = {
+const designColors: {
+  [key: string]: { color: string; rotation?: string };
+} = {
   Friends: { color: "#E8A237" },
   Parties: { color: "#EA664D" },
   Experiences: { color: "#6597B3" },
@@ -394,18 +405,18 @@ const designColors = {
   "Poker Nights": { color: "#2DB3FF", rotation: "0deg" },
   "Club Events": { color: "#5732ab", rotation: "0deg" },
   Meetups: { color: "#EA664D", rotation: "0deg" },
-};
+} as const;
 
 const StyledH1 = styled.h1`
-  background: ${(props) => designColors[props.text].color};
+  background: ${(props: any) => designColors[props.text].color};
   padding: 0 10px;
-  transform: ${(props) => `rotate(${designColors[props.text].rotation})`};
+  transform: ${(props: any) => `rotate(${designColors[props.text].rotation})`};
   text-align: center;
 `;
 const StyledH2 = styled.h1`
-  color: ${(props) => designColors[props.text].color};
+  color: ${(props: any) => designColors[props.text].color};
   padding: 0 10px;
-  transform: ${(props) => `rotate(${designColors[props.text].rotation})`};
+  transform: ${(props: any) => `rotate(${designColors[props.text].rotation})`};
   text-align: center;
 `;
 

@@ -32,8 +32,8 @@ const HomePage = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   // const [fetchingEvents, setFetchingEvents] = useState(false);
 
-  const { userCred, draftEvents, prevEventsFromLS } = useGlobalState();
-  const { currentUser } = useAuthContext();
+  const { userCred, draftEvents, prevEventsFromLS }: any = useGlobalState();
+  const { currentUser }: any = useAuthContext();
   // const { address } = useAccount();
 
   // const { connect, connectors } = useConnect({
@@ -222,7 +222,9 @@ const HomePage = () => {
 
   return (
     <HomeCtr>
-      <h1 className="title">Hey {userCred?.name ?? "babe"}, let's meet?</h1>
+      <h1 className="title">
+        Hey {userCred?.name ?? "babe"}, let&apos;s meet?
+      </h1>
       {fetchingEvents ? (
         <Loader />
       ) : (
