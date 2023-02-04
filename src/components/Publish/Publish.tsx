@@ -40,7 +40,7 @@ const Publish = ({ id, type }: any) => {
     draftEvents,
     setCustomBackHeaderLink,
   } = useGlobalState();
-  const { userDetails, currentUser } = useAuthContext();
+  const { userDetails, currentUser }: any = useAuthContext();
   const [formDataStor, setFormDataStor] = useState<any>();
   const router = useRouter();
 
@@ -167,6 +167,7 @@ const Publish = ({ id, type }: any) => {
         <Loader />
       ) : (
         <>
+          {/* @ts-ignore */}
           {showModalPublish ? <Modal eventid={eventId} /> : null}
           <div className="_eventDetails">
             <div className="_eventImg">
@@ -288,7 +289,7 @@ const Publish = ({ id, type }: any) => {
               <div className="_reactionImg">
                 <Image src={assets.reactions.going} alt="going-to-event" />
               </div>
-              <p className="_reactionLabel">I'm Going !</p>
+              <p className="_reactionLabel">I&apos;m Going !</p>
             </div>
             <div className="_reaction">
               <div className="_reactionImg">

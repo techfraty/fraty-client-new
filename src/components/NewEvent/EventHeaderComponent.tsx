@@ -17,7 +17,6 @@ const EventHeader = ({
   reactionContainerRef,
   eventID,
 }: any) => {
-  // const { eventID: eventIDParam } = useParams();
   const { userInfo, userCred } = useGlobalState();
   const [copyStatus, setCopyStatus] = useState(false);
   const [showNotGoing, setshowNotGoing] = useState(false);
@@ -31,7 +30,7 @@ const EventHeader = ({
 
   const copyEventShareLink = () => {
     window.navigator.clipboard.writeText(
-      `${window.location.host}/event/${eventIDParam}`
+      `${window.location.host}/event/${eventID}`
     );
     setCopyStatus(true);
     setTimeout(() => setCopyStatus(false), 1000);
@@ -61,7 +60,6 @@ const EventHeader = ({
                 "Yahoo",
               ],
               timeZone: "Europe/Berlin",
-              eventIDParam,
             });
           }}
         >
@@ -92,7 +90,7 @@ const EventHeader = ({
                 }}
               />
             </div>
-            <p className="_reactionLabel">I'm Going</p>
+            <p className="_reactionLabel">I&apos;m Going</p>
           </div>
         </div>
         {hasRsvpd &&

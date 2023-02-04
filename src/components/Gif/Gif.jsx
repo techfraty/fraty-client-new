@@ -126,6 +126,7 @@ const Gif = ({ handleClose }) => {
                 ? !loadingifs &&
                   Object.values(trending).map((gif, idx) => (
                     <div
+                      key={idx}
                       className="imgCard"
                       onClick={() => {
                         setgifPreview(gif);
@@ -138,6 +139,7 @@ const Gif = ({ handleClose }) => {
                   ))
                 : userDetails?.uploadedCoverImages?.map((img, idx) => (
                     <div
+                      key={idx}
                       className="imgCard"
                       onClick={() => {
                         setgifPreview({

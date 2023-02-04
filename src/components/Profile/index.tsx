@@ -11,7 +11,7 @@ import Button from "../Button/Button";
 import { useRouter } from "next/router";
 
 const Profile = () => {
-  const { currentUser, userDetails, setUserDetails, setCurrentUser } =
+  const { currentUser, userDetails, setUserDetails, setCurrentUser }: any =
     useAuthContext();
   // console.log(userDetails, currentUser);
   const { setCurrentPageTitle, userCred } = useGlobalState();
@@ -138,7 +138,7 @@ const Profile = () => {
           />
         </label>
         <label className="_userInput">
-          <span>What's your favourite song?</span>
+          <span>What&apos;s your favourite song?</span>
           <input
             type="text"
             name="song"

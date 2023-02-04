@@ -7,7 +7,8 @@ import crossIcon from "../../assets/images/icons/close.svg";
 import Button from "../Button/Button";
 import { useRouter } from "next/router";
 import Image from "next/image";
-const Modal = () => {
+
+const Modal: React.FC = () => {
   const navigate = useRouter();
   const eventId = navigate.query.eventId;
 
@@ -36,6 +37,7 @@ const Modal = () => {
             <h2>Share your party! 🍾</h2>
             <Image
               src={crossIcon}
+              alt="cancel"
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setShowModalPublish(false);

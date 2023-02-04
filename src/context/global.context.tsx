@@ -12,7 +12,7 @@ import { fetchServices } from "../util/services";
 import { useAuthContext } from "./auth.context";
 import { useRouter } from "next/router";
 
-interface IGlobalContext {
+export interface IGlobalContext {
   currentPageTitle: string | null;
   setCurrentPageTitle: React.Dispatch<React.SetStateAction<string | null>>;
   selectedEvent: any;

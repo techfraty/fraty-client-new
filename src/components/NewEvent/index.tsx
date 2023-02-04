@@ -55,20 +55,20 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
   const [hasRsvpd, setHasRsvpd] = useState(false);
   const [userSubmittedPoll, setUserSubmittedPoll] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authModalCallback, setAuthModalCallback] = useState(false);
+  const [authModalCallback, setAuthModalCallback] = useState();
   const [inWaitingRoom, setInWaitingRoom] = useState(false);
   const [isEventCreator, setIsEventCreator] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const signupRef = useRef(null);
-  const reactionContainerRef = useRef(null);
+  const reactionContainerRef = useRef<HTMLDivElement>(null);
   const [lightBoxToggler, setLightBoxToggler] = useState(false);
   const [lightBoxIdx, setLightBoxIdx] = useState(0);
   const [notGoingModalText, setNotGoingModalText] = useState("");
   const [notGoingModalAfterRsvp, setNotGoingModalAfterRsvp] = useState(false);
   const [members, setMembers] = useState([]);
-  const { currentUser, userDetails } = useAuthContext();
+  const { currentUser, userDetails }: any = useAuthContext();
 
   function isValidEventID(eventID: any) {
     return eventID !== undefined && eventID !== null && eventID?.length === 24;
@@ -115,7 +115,8 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
     to display viewed events on home page
   */
   useEffect(() => {
-    const prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS)) || [];
+    let rawEvents = localStorage.getItem(FRATY_EVENTS) || "[]";
+    const prevEvents = JSON.parse(rawEvents) || [];
     if (!prevEvents.includes(eventIDParam) && isValidEventID(eventIDParam)) {
       prevEvents.push(eventIDParam);
       localStorage.setItem(FRATY_EVENTS, JSON.stringify(prevEvents));
@@ -223,9 +224,9 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
       }
       console.log({ data, waiting });
       const filteredMembers = data?.members?.filter(
-        (m) =>
-          m?._id !== selectedEvent?.creator &&
-          waitingIds?.findIndex((e: any) => e === m?._id) === -1
+        (member: any) =>
+          member?._id !== selectedEvent?.creator &&
+          waitingIds?.findIndex((e: any) => e === member?._id) === -1
       );
       setMembers(filteredMembers);
 
@@ -262,9 +263,10 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
   }, [selectedEvent, setCurrentPageTitle]);
 
   function removeEventFromLocalStorage(eventId: any) {
-    let prevEvents = JSON.parse(localStorage.getItem(FRATY_EVENTS));
+    let rawEvents = localStorage.getItem(FRATY_EVENTS) || "[]";
+    let prevEvents = JSON.parse(rawEvents) as Array<any>;
     if (prevEvents) {
-      prevEvents = prevEvents.filter((e) => e !== eventId);
+      prevEvents = prevEvents.filter((e: any) => e !== eventId);
       localStorage.setItem(FRATY_EVENTS, JSON.stringify(prevEvents));
     }
   }
@@ -278,6 +280,7 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
 
     if (!currentUser) {
       setShowAuthModal(true);
+      // @ts-ignore
       setAuthModalCallback(() => () => navigateToResponse(type));
       return;
     }
@@ -333,7 +336,7 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
 
   function handleClickRSVPNow() {
     if (reactionContainerRef.current) {
-      reactionContainerRef.current?.scrollIntoView({ behavior: "smooth" });
+      reactionContainerRef?.current?.scrollIntoView({ behavior: "smooth" });
     }
   }
 
@@ -414,7 +417,7 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
       </Helmet>
       {/* <PaymentPopup></PaymentPopup> */}
       {!isLoading && !isValidEvent() ? (
-        <h2>Seems like you're at the wrong page!</h2>
+        <h2>Seems like you&apos;re at the wrong page!</h2>
       ) : (
         <>
           {showPaymentPopup ? (
@@ -543,7 +546,7 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
                       className="overlay_image_reaction"
                     />
                   </div>
-                  <p className="_reactionLabel">I'm Going !</p>
+                  <p className="_reactionLabel">I&apos;m Going !</p>
                 </div>
                 <div
                   className="_reaction"
