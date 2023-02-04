@@ -30,9 +30,15 @@ import { Helmet } from "react-helmet";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Image from "next/image";
+import Head from "next/head";
 
-const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
-  console.log({ eventIDParam });
+interface EventPageProps {
+  eventIDParam: string;
+  rsvpStatus?: string;
+  event: any;
+}
+
+const EventPage = ({ eventIDParam, rsvpStatus, event }: any) => {
   const {
     selectedEvent,
     setSelectedEvent,
@@ -83,22 +89,26 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
   useEffect(() => {
     async function fetchEventDetails() {
       setIsLoading(true);
-      try {
-        const res = await fetchServices.fetchEventDetailsFull({
-          eventID: eventIDParam,
-        });
-        setSelectedEvent(res.event);
-        setCurrentPageTitle(res.event.name);
-      } catch (error) {
-        console.log("ERR_FETCH_EVENT_DETAILS", error);
-      }
+      // try {
+      //   const res = await fetchServices.fetchEventDetailsFull({
+      //     eventID: eventIDParam,
+      //   });
+      //   setSelectedEvent(res.event);
+      //   setCurrentPageTitle(res.event.name);
+      // } catch (error) {
+      //   console.log("ERR_FETCH_EVENT_DETAILS", error);
+      // }
+
+      // take event from server side props
+      setSelectedEvent(event);
+
       setIsLoading(false);
     }
     if (!isValidEventID(eventIDParam)) {
       setCustomBackHeaderLink("/");
     }
     fetchEventDetails();
-  }, [eventIDParam, setSelectedEvent, setCurrentPageTitle]);
+  }, [event, eventIDParam, setSelectedEvent, setCurrentPageTitle]);
 
   /*
     Check if user is event creator
@@ -398,23 +408,23 @@ const EventPage = ({ eventIDParam, rsvpStatus }: any) => {
   console.log(selectedEvent?._id);
   return (
     <EventCtr>
-      <Helmet>
-        <title>Event on Fraty!</title>
-        <meta
-          name="description"
-          content="Hey, checkout this event on fraty.in"
-        />
+      <Head>
+        <title>{selectedEvent?.title}</title>
+        <meta name="description" content="Hey, checkout this event on Fraty" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Event on Fraty!" />
+        <meta property="og:title" content={selectedEvent?.title} />
         <meta
           property="og:description"
           content="Hey, checkout this event on fraty.in"
         />
         <meta
           property="og:image"
-          content="https://www.meme-arsenal.com/memes/cc93311366bfbca1bff40222ec269da9.jpg"
+          content={
+            selectedEvent?.image ||
+            "https://www.meme-arsenal.com/memes/cc93311366bfbca1bff40222ec269da9.jpg"
+          }
         ></meta>
-      </Helmet>
+      </Head>
       {/* <PaymentPopup></PaymentPopup> */}
       {!isLoading && !isValidEvent() ? (
         <h2>Seems like you&apos;re at the wrong page!</h2>
