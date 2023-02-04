@@ -43,14 +43,14 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
   const [openGIF, setOpenGIF] = useState(false);
   const [paymentInfoPopup, setPaymentInfoPopup] = useState(false);
 
-  const { userDetails, currentUser } = useAuthContext();
+  const { userDetails, currentUser }: any = useAuthContext();
 
   useEffect(() => {
     setFormData({});
   }, [setFormData]);
 
   useEffect(() => {
-    if (type === "edit" && id !== 1) {
+    if (type === "edit" && Number(id) !== 1) {
       setEditView(true);
       setgifPreview({ images: { downsized: { url: selectedEvent?.image } } });
     } else {
@@ -93,7 +93,8 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
   const router = useRouter();
   let formDataStor: any = [];
   useEffect(() => {
-    formDataStor = JSON.parse(window.localStorage.getItem(DRAFT_EVENTS));
+    let rawData = window.localStorage.getItem(DRAFT_EVENTS) || "[]";
+    formDataStor = JSON.parse(rawData);
   }, []);
 
   const saveDraftOnServer = async (newDraftEvent: any) => {
@@ -417,7 +418,7 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
         </FormInput>
         <FormInput>
           <Switchs>
-            <label class="switch">
+            <label className="switch">
               {/* checked={editView ? selectedEvent?.locationHide : false} */}
               <input
                 type="checkbox"
@@ -425,14 +426,13 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
                 checked={formData?.showLocation}
                 {...register("showLocation", { onChange: handleChange })}
               />
-              <span class="slider round"></span>
+              <span className="slider round"></span>
             </label>
             <p style={{ fontSize: "14px" }}>Hide location until RSVP?</p>
           </Switchs>
         </FormInput>
         <FormInput>
           <textarea
-            type="text"
             placeholder="What’s the party for? *"
             className=" text-small"
             id="description"
@@ -459,7 +459,7 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
         </FormInput> */}
         <FormInput>
           <Switchs>
-            <label class="switch">
+            <label className="switch">
               {/* checked={editView ? selectedEvent?.waitList : false} */}
               <input
                 type="checkbox"
@@ -467,7 +467,7 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
                 checked={formData?.waitList}
                 {...register("waitList", { onChange: handleChange })}
               />
-              <span class="slider round"></span>
+              <span className="slider round"></span>
             </label>
             <p style={{ fontSize: "14px" }}>Waiting room </p>
           </Switchs>
@@ -572,7 +572,19 @@ const CreateEvent: NextPage<{ type: string; id: string }> = ({ type, id }) => {
   );
 };
 
-const PaymentMethod = ({ icon, name, value, onChange }) => {
+interface PaymentMethodProps {
+  icon: string;
+  name: string;
+  onChange: (e: any) => void;
+  value?: string;
+}
+
+const PaymentMethod: React.FC<PaymentMethodProps> = ({
+  icon,
+  name,
+  value,
+  onChange,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="_method" onClick={() => setIsOpen(!isOpen)}>
