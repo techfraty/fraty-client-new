@@ -461,7 +461,7 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
         <meta
           property="og:image"
           content={
-            !event?.image?.contains(".gif")
+            !event?.image?.includes(".gif")
               ? event?.image
               : "https://www.meme-arsenal.com/memes/cc93311366bfbca1bff40222ec269da9.jpg"
           }
