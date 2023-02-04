@@ -123,7 +123,6 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
   */
   useEffect(() => {
     async function fetchEventDetails() {
-      setIsLoading(true);
       // try {
       //   const res = await fetchServices.fetchEventDetailsFull({
       //     eventID: eventIDParam,
@@ -136,8 +135,6 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
 
       // take event from server side props
       setSelectedEvent(event);
-
-      setIsLoading(false);
     }
     if (!isValidEventID(eventIDParam)) {
       setCustomBackHeaderLink("/");
@@ -593,6 +590,8 @@ const EventPage: InferGetServerSidePropsType<typeof getServerSideProps> = ({
                   <div className="_reactionImg _reaction_going">
                     {/* <img src={goingImage} alt="going-to-event" /> */}
                     <Image
+                      width={100}
+                      height={100}
                       src={assets.reactions.going}
                       alt="going-to-event"
                       className="overlay_image_reaction"
@@ -1049,8 +1048,7 @@ const EventCtr = styled.div`
   .overlay_image_reaction {
     width: 100% !important;
     height: 100% !important;
-    position: absoimport { useQuery } from '@tanstack/react-query';
-lute;import { useQuery } from '@tanstack/react-query';
+    position: absolute;
 
     top: 50%;
     left: 50%;

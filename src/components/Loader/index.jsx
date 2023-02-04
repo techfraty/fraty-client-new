@@ -6,7 +6,7 @@ import assets from "../../assets";
 const Loader = () => {
   return (
     <LoaderCtr>
-      <Image src={assets.loader} alt="" />
+      <Image width={200} height={200} src={assets.loader} alt="" />
     </LoaderCtr>
   );
 };

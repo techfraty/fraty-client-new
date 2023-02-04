@@ -41,7 +41,7 @@ const LandingPage = () => {
     clamp: false,
   });
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const updateSize = () => {
       setCalculatedWidth(
         (Number(containerRef?.current?.offsetWidth) / Math.sqrt(3)) * 2 + 100

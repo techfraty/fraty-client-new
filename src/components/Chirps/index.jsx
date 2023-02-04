@@ -95,6 +95,9 @@ const Chirps = ({ height, eventID }) => {
       console.log(res);
       setChirps(res);
     },
+    onError: (err) => {
+      // toast.error("Error Fetching Chirps !");
+    },
   });
 
   const { isLoading: uploadingChirp, mutate: uploadChirp } = useMutation(
